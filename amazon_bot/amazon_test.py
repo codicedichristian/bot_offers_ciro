@@ -23,7 +23,7 @@ def spacchettamento_diff(diff):
         return new_list
     else:
         print("no diff")
-
+    print(new_list)
     return 0
 
     
@@ -38,17 +38,18 @@ def main():
 
     # TODO -> we NEED TO GET ALSO THE ASIN we can find it in the item link. 
     # get the new list of element
-    amListObj = AmazonList()
-    items_from_amazon = amListObj.getNewList("BEST_SELLER_ELECTR_HOURLY_24H") ## return json obj list
-    
-    # print(items_from_amazon)
+    # amListObj = AmazonList()
+    # items_from_amazon = amListObj.getNewList("BEST_SELLER_ELECTR_HOURLY_24H") ## return json obj list
 
-    # ## get the same list but from jsonStorage (the 5 element from the collection)
-    # storage = JsonStorageManager()
-    # items_from_storage = storage.prendiLaRoba('BEST_SELLER_ELECTR_HOURLY') ## return json obj
+    # # ## get the same list but from jsonStorage (the 5 element from the collection)
+    storage = JsonStorageManager()
+    # items_from_storage = storage.prendiLaRoba('BEST_SELLER_ELECTR_HOURLY_24H') ## return json obj
+    for x in range(11):
+        res = storage.creaContainer()
+        print(res)
+    # ## send items amazon to jsonStorage
+    # print("storage returned:  ", storage.updateLaRoba('BEST_SELLER_ELECTR_HOURLY_24H', items_from_amazon))
 
-    # ## send items amazon to jsonStorage
-    # print("storage returned:  ", storage.updateLaRoba('BEST_SELLER_ELECTR_HOURLY', items_from_amazon))
 
     # ## crea json con differenze all'interno
     # diff = DeepDiff(items_from_storage, items_from_amazon, ignore_order=True)

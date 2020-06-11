@@ -81,6 +81,10 @@ class AmazonList:
     def __getlink(self, li):
         return li.find('a', class_="a-link-normal").get('href')
 
+    def __getprice(self, li): 
+        found = li.find('span', class_="p13n-sc-price")
+        return found.string if found else ""
+
     def getNewList(self, category_to_get): 
 
         ## get the correct link and call the browser and do the request
@@ -96,24 +100,30 @@ class AmazonList:
         itemObjList = []
         # some = driver.find_elements_by_xpath('//*[@class="zg-item-immersion"]')
         soup = BeautifulSoup(driver.page_source, 'html.parser')
+        print("im ready")
         lilist = soup.find_all('span', class_='a-list-item')
         for li in lilist:
             position = self.__getposition(li)
             title    = self.__gettitle(li)
             reviews  = self.__getreviews(li)
             link     = self.__getlink(li)
-              #     # best_seller_obj = {
-        #     #     "position" : float(group[0].replace('#',''))  , 
-        #     #     "title" : group[1], 
-        #     #     "review" : float(group[2]), 
-        #     #     "price" : group[3]
-        #     # }
+            price    = self.__getprice(li)
+            itemToPush = {
+                "position": position,
+                "title": title, 
+                "reviews": reviews,
+                "link": link,
+                "price": price 
+            }
+            itemObjList.append(itemToPush)
+            
 
+        
         #     # #stringfy_obj = json.dumps(best_seller_obj, ensure_ascii=False).encode('utf8') ## json string
         #     # itemObjList.append(best_seller_obj)
         
         driver.quit()
-        return 0
+        return itemObjList
        
         # itemsArray = listedObjs.split('\n')
         # items_to_get = self.__items_to_get
