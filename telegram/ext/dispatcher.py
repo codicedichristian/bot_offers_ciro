@@ -232,7 +232,7 @@ class Dispatcher(object):
             Promise
 
         """
-        # TODO: handle exception in async threads
+    
         #       set a threading.Event to notify caller thread
         promise = Promise(func, args, kwargs)
         self.__async_queue.put(promise)

@@ -110,7 +110,8 @@ class Request(object):
         sockopts = HTTPConnection.default_socket_options + [
             (socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)]
 
-        # TODO: Support other platforms like mac and windows.
+        
+    
         if 'linux' in sys.platform:
             sockopts.append((socket.IPPROTO_TCP,
                              socket.TCP_KEEPIDLE, 120))  # pylint: disable=no-member
@@ -155,7 +156,7 @@ class Request(object):
             else:
                 mgr = urllib3.proxy_from_url(proxy_url, **kwargs)
                 if mgr.proxy.auth:
-                    # TODO: what about other auth types?
+                    
                     auth_hdrs = urllib3.make_headers(proxy_basic_auth=mgr.proxy.auth)
                     mgr.proxy_headers.update(auth_hdrs)
 
@@ -227,7 +228,7 @@ class Request(object):
             raise TimedOut()
         except urllib3.exceptions.HTTPError as error:
             # HTTPError must come last as its the base urllib3 exception class
-            # TODO: do something smart here; for now just raise NetworkError
+            
             raise NetworkError('urllib3 HTTPError {0}'.format(error))
 
         if 200 <= resp.status <= 299:

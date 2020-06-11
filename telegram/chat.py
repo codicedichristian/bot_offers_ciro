@@ -112,7 +112,6 @@ class Chat(TelegramObject):
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
-        # TODO: Remove (also from tests), when Telegram drops this completely
         self.all_members_are_administrators = kwargs.get('all_members_are_administrators')
         self.photo = photo
         self.description = description

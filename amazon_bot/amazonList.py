@@ -21,6 +21,7 @@ chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
 
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
+elements_to_return = 10
 # driver = webdriver.Chrome(
 #     # executable_path=CHROMEDRIVER_PATH,
 #     options=chrome_options
@@ -32,7 +33,6 @@ class AmazonList:
     __items_to_get = 5
     # URL USED -> MAYBE COULD BE TRANSFERRED IN AN EXCEL FILE -> TO DO? 
     __categories = {
-
         ## BEST SELLER 24H HOURLY REFRESHED -- IMPORTANT
         "BEST_SELLER_GROCER_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/grocery/ref=zg_bsms_nav_0',
         "BEST_SELLER_KITCHE_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/kitchen/ref=zg_bsms_nav_gro_1_gro', 
@@ -68,7 +68,11 @@ class AmazonList:
         return li.span.string.replace('#','')
 
     def __gettitle(self, li):
-        return li.find('div', class_="p13n-sc-truncated").string
+        title = li.find('div', class_="p13n-sc-truncated")
+         if(title): 
+            return title.string
+        else: 
+            return "0"
 
     def __getreviews(self, li):
          # could be not available for some items
@@ -108,6 +112,7 @@ class AmazonList:
             reviews  = self.__getreviews(li)
             link     = self.__getlink(li)
             price    = self.__getprice(li)
+            ## TODO --->  aggiungere immagine e creare link affiliato 
             itemToPush = {
                 "position": position,
                 "title": title, 
@@ -116,35 +121,9 @@ class AmazonList:
                 "price": price 
             }
             itemObjList.append(itemToPush)
-            
-
-        
-        #     # #stringfy_obj = json.dumps(best_seller_obj, ensure_ascii=False).encode('utf8') ## json string
-        #     # itemObjList.append(best_seller_obj)
-        
-        driver.quit()
+            itemObjList[:elements_to_return]
+                    
         return itemObjList
-       
-        # itemsArray = listedObjs.split('\n')
-        # items_to_get = self.__items_to_get
-        # subGroupedItems = self.__getItems(items_to_get, itemsArray)
-        # driver.quit()
-      
+    def closeDriver(self):
+        driver.quit()
         
-        # for group in subGroupedItems:
-        #     print(group)
-        #     # ## format things and put it into the final array 
-        #     # best_seller_obj = {
-        #     #     "position" : float(group[0].replace('#',''))  , 
-        #     #     "title" : group[1], 
-        #     #     "review" : float(group[2]), 
-        #     #     "price" : group[3]
-        #     # }
-
-        #     # #stringfy_obj = json.dumps(best_seller_obj, ensure_ascii=False).encode('utf8') ## json string
-        #     # itemObjList.append(best_seller_obj)
-        
-
-    def aggiornaListaContainers(self, container_name):
-        #TODO: non so se serve
-        return 0

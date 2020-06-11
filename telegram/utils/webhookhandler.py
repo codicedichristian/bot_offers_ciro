@@ -99,7 +99,7 @@ class WebhookHandler(tornado.web.RequestHandler):
         if the known-incompatible default policy is in use.
         do this as early as possible to make it a low priority and overrideable
         ref: https://github.com/tornadoweb/tornado/issues/2608
-        TODO: if/when tornado supports the defaults in asyncio,
+        
                 remove and bump tornado requirement for py38
         Copied from https://github.com/ipython/ipykernel/pull/456/
         """
