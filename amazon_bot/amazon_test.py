@@ -55,32 +55,37 @@ def main():
     amListObj = AmazonList()
     mongo = MongoConnector()
 
-    for category in categories:
-        items_from_amazon = amListObj.getNewList(category) ## return json obj list
-        res = mongo.inserisciRoba(items_from_amazon, category)
-        print(res)
+    # for category in categories:
+    #     items_from_amazon = amListObj.getNewList(category) ## return json obj list
+    #     res = mongo.insertItems(items_from_amazon, category)
+    #     print(res)
+
+   # items_from_amazon = amListObj.getNewList('BEST_LAUNCH_GLOBAL_HOURLY')
+   # mongo.insertItems(items_from_amazon, 'BEST_LAUNCH_GLOBAL_HOURLY')
+    
+    items = mongo.deleteOlder('BEST_LAUNCH_GLOBAL_HOURLY')
+   
 
     amListObj.closeDriver()
 
     ## __________ 
 
-    - attualmente il programma tira giu da amazon tutte le liste limitate per 5 (tagliando alla fine) 
-    
-    - ora dobbiamo provare a tirare giu gli elementi da mongodb in formato json e
-     confrontarli con la lista che ci arriva da amazon 
+     
+    # - ora dobbiamo provare a tirare giu gli elementi da mongodb in formato json e
+    #  confrontarli con la lista che ci arriva da amazon 
 
-    - trovato il diff aggiorniamo la lista su mongo (facile passaggio perchè gia testato)
-    - i diff li mettiamo tutti nella stessa collection "diff" 
+    # - trovato il diff aggiorniamo la lista su mongo (facile passaggio perchè gia testato)
+    # - i diff li mettiamo tutti nella stessa collection "diff" 
     
-    - fatto questo bisogna attaccare il bot che si legge gli elementi dal diff e che li sputa in un formato bello (con il bottone pubblica)
+    # - fatto questo bisogna attaccare il bot che si legge gli elementi dal diff e che li sputa in un formato bello (con il bottone pubblica)
 
 
-    - finito tutto colleghiamo i pezzi: 
-        1- tirare nuova lista giu di 5 elementi da amazon ogni 2 ore
-        2- confrontare con la lista presente su mongo
-        3- tirare fuori le diff e metterle sulla collection diff
+    # - finito tutto colleghiamo i pezzi: 
+    #     1- tirare nuova lista giu di 5 elementi da amazon ogni 2 ore
+    #     2- confrontare con la lista presente su mongo
+    #     3- tirare fuori le diff e metterle sulla collection diff
     
-    - bot che ogni 2 ore e 15 min controlla la lista diff e spara sulla chat personale i prodotti :) 
+    # - bot che ogni 2 ore e 15 min controlla la lista diff e spara sulla chat personale i prodotti :) 
     
 
     

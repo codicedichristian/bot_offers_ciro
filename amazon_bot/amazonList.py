@@ -9,6 +9,10 @@ from bs4 import BeautifulSoup
 from itertools import *
 from item import Item
 import json
+import re
+import calendar;
+import time;
+
 
 
 
@@ -29,7 +33,7 @@ elements_to_return = 10
 
 
 class AmazonList:
-
+    __affiliate_id = "techdiscoun09-21"
     __items_to_get = 5
     # URL USED -> MAYBE COULD BE TRANSFERRED IN AN EXCEL FILE -> TO DO? 
     __categories = {
@@ -65,29 +69,44 @@ class AmazonList:
         return list(self.__chunk(itemsArray, 4))[:n]
 
     def __getposition(self, li):
-        return li.span.string.replace('#','')
+        found = li.span
+        return found.string.replace('#','') if found else ""
 
     def __gettitle(self, li):
-        title = li.find('div', class_="p13n-sc-truncated")
-         if(title): 
-            return title.string
-        else: 
-            return "0"
+        found = li.find('div', class_="p13n-sc-truncated")
+        return found.string if found else ""
 
     def __getreviews(self, li):
          # could be not available for some items
-        reviews = li.find('a', class_="a-size-small a-link-normal")
-        if(reviews): 
-            return reviews.string
-        else: 
-            return "0"
+        found = li.find('a', class_="a-size-small a-link-normal")
+        return found.string if found else ""
         
     def __getlink(self, li):
-        return li.find('a', class_="a-link-normal").get('href')
+        found = li.find('a', class_="a-link-normal")
+        return found.get('href') if found else ""
 
     def __getprice(self, li): 
         found = li.find('span', class_="p13n-sc-price")
         return found.string if found else ""
+    
+    def __getimglink(self, li): 
+        found = li.find('img')
+        return found['src'] if found else ""
+    
+    def __getasin(self, link): 
+        try:
+            asin_found = re.search('/dp/(.+?)/ref', link).group(1)
+        except AttributeError:
+            asin_found = ''
+        return asin_found
+
+    def __getaffiliatelink(self, asin): 
+        base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
+        return base_link.replace("ASIN_TO_INCLUDE", asin)
+    
+    def __getTimesmp(self):
+        ts = calendar.timegm(time.gmtime())
+        return ts
 
     def getNewList(self, category_to_get): 
 
@@ -110,20 +129,34 @@ class AmazonList:
             position = self.__getposition(li)
             title    = self.__gettitle(li)
             reviews  = self.__getreviews(li)
-            link     = self.__getlink(li)
             price    = self.__getprice(li)
-            ## TODO --->  aggiungere immagine e creare link affiliato 
+            imglink  = self.__getimglink(li)
+            link     = self.__getlink(li) ## not used in the object but useful to create other values (afflink, asin)
+            asin     = self.__getasin(link)
+            affLink  = self.__getaffiliatelink(asin)
+            timesmp  = self.__getTimesmp()
+            
+
+            # object that will be pushed on mongodb
             itemToPush = {
-                "position": position,
-                "title": title, 
-                "reviews": reviews,
-                "link": link,
-                "price": price 
+                "position"      : position,
+                "title"         : title, 
+                "reviews"       : reviews,
+                "price"         : price, 
+                "imglink"       : imglink, 
+                "link"          : link,
+                "asin"          : asin,
+                "affiliateLink" : affLink, 
+                "timestamp"     : timesmp
             }
+
             itemObjList.append(itemToPush)
-            itemObjList[:elements_to_return]
-                    
-        return itemObjList
+        
+        #cut first n elements
+        return itemObjList[:elements_to_return]
+
+   
+
     def closeDriver(self):
         driver.quit()
         
