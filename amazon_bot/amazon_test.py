@@ -17,6 +17,7 @@ def checkKey(dict, key):
 
 def spacchettamento_diff(diff):
     new_list = []
+    print(diff)
     if(checkKey(diff, "iterable_item_added")):
         set_of_values_added = diff['iterable_item_added']
         for key in list(set_of_values_added):
@@ -45,6 +46,8 @@ categories = (
        "BEST_SELLER_ELECTR_HOURLY",
        "BEST_SELLER_HCPHCP_HOURLY"
     )
+
+diff_collection = "ITEMS_DIFF"
     
 
     
@@ -60,19 +63,23 @@ def main():
     #     res = mongo.insertItems(items_from_amazon, category)
     #     print(res)
 
-   # items_from_amazon = amListObj.getNewList('BEST_LAUNCH_GLOBAL_HOURLY')
-   # mongo.insertItems(items_from_amazon, 'BEST_LAUNCH_GLOBAL_HOURLY')
+    # get list from amazon html
+    items_from_amazon = amListObj.getNewList('BEST_LAUNCH_GLOBAL_HOURLY')
+    ## put the list inside mongodb 
+    mongo.insertItems(items_from_amazon, 'BEST_LAUNCH_GLOBAL_HOURLY')
+    ## delete older ( three timestamp before)
+    items = mongo.deleteOlder('BEST_LAUNCH_GLOBAL_HOURLY')  
+    ## get differences 
+    ddiff = DeepDiff(mongo.getPreviousItems('BEST_LAUNCH_GLOBAL_HOURLY'), mongo.getLastItems('BEST_LAUNCH_GLOBAL_HOURLY'))
     
-    items = mongo.deleteOlder('BEST_LAUNCH_GLOBAL_HOURLY')
-   
-
+    print(spacchettamento_diff(ddiff))
     amListObj.closeDriver()
 
     ## __________ 
 
      
-    # - ora dobbiamo provare a tirare giu gli elementi da mongodb in formato json e
-    #  confrontarli con la lista che ci arriva da amazon 
+    # - ora dobbiamo tirare giu gli elementi da mongodb del previous timestamp e
+    #  confrontarli con mongodb lasttimestamp
 
     # - trovato il diff aggiorniamo la lista su mongo (facile passaggio perchè gia testato)
     # - i diff li mettiamo tutti nella stessa collection "diff" 
