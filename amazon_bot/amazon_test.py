@@ -5,7 +5,6 @@
 import json
 from jsonStorageManager import JsonStorageManager
 from amazonList import AmazonList
-from deepdiff import DeepDiff
 from mongoConnector import MongoConnector
 
 def checkKey(dict, key): 
@@ -15,18 +14,16 @@ def checkKey(dict, key):
     else: 
        return False
 
-def spacchettamento_diff(diff):
-    new_list = []
+## newItems - oldItems = items added (just new items)
+def myBeautifulDiff(oldItems, newItems):
+    asins = [item['asin'] for item in list(oldItems)]
+    diff = []
+    for item in list(newItems):
+        if item['asin'] not in asins:
+            diff.append(item)
     print(diff)
-    if(checkKey(diff, "iterable_item_added")):
-        set_of_values_added = diff['iterable_item_added']
-        for key in list(set_of_values_added):
-            new_list.append(diff['iterable_item_added'][key])
-        return new_list
-    else:
-        print("no diff")
-    print(new_list)
-    return 0
+    return diff
+
 
 
 categories = (
@@ -70,22 +67,25 @@ def main():
     ## delete older ( three timestamp before)
     items = mongo.deleteOlder('BEST_LAUNCH_GLOBAL_HOURLY')  
     ## get differences 
-    ddiff = DeepDiff(mongo.getPreviousItems('BEST_LAUNCH_GLOBAL_HOURLY'), mongo.getLastItems('BEST_LAUNCH_GLOBAL_HOURLY'))
+    diffToUpload = myBeautifulDiff(mongo.getPreviousItems('BEST_LAUNCH_GLOBAL_HOURLY'), mongo.getLastItems('BEST_LAUNCH_GLOBAL_HOURLY'))
+
+    if(len(diffToUpload) > 0):
+        mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
+    else: 
+        print("there aren't diff, so we will not update ITEMS_DIFF")
     
-    print(spacchettamento_diff(ddiff))
+
     amListObj.closeDriver()
 
     ## __________ 
 
-     
-    # - ora dobbiamo tirare giu gli elementi da mongodb del previous timestamp e
-    #  confrontarli con mongodb lasttimestamp
-
-    # - trovato il diff aggiorniamo la lista su mongo (facile passaggio perchè gia testato)
     # - i diff li mettiamo tutti nella stessa collection "diff" 
-    
-    # - fatto questo bisogna attaccare il bot che si legge gli elementi dal diff e che li sputa in un formato bello (con il bottone pubblica)
+    # - gestire i diff (solo una collection o piu' collections?/inserire la version?)
+    # - gestire le versioni dei diff se si vuole... oppure si cancella tutto ogni giro
+    # - rimettere in piedi il loop e fare una bella prova con i diff compresi!
+    # - guardare come farlo fare automatico ogni due ore
 
+    # - fatto questo bisogna attaccare il bot che si legge gli elementi dal diff e che li sputa in un formato bello (con il bottone pubblica)
 
     # - finito tutto colleghiamo i pezzi: 
     #     1- tirare nuova lista giu di 5 elementi da amazon ogni 2 ore
@@ -93,8 +93,6 @@ def main():
     #     3- tirare fuori le diff e metterle sulla collection diff
     
     # - bot che ogni 2 ore e 15 min controlla la lista diff e spara sulla chat personale i prodotti :) 
-    
-
     
 
 
