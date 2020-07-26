@@ -3,7 +3,6 @@
 
 # ## new imports
 import json
-from jsonStorageManager import JsonStorageManager
 from amazonList import AmazonList
 from mongoConnector import MongoConnector
 

@@ -1,14 +1,14 @@
 
 from pymongo import MongoClient
+import config
 import sys
 
 class MongoConnector:
 
-    __mongo_url = "mongodb+srv://admin:eGpCz4XWJ2r1FU3T@amzdlsd01-qfqmt.mongodb.net/authSource=amzdlsd01&retryWrites=true&w=majority"
     __db = None
 
     def __init__(self):
-        client = MongoClient(self.__mongo_url, ssl=True)
+        client = MongoClient(config.MONGO_URL, ssl=True)
         self.__db = client['amzdlsd01']
 
     def insertItems(self, data, collection): 
