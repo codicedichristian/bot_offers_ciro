@@ -1,14 +1,14 @@
 
 from pymongo import MongoClient
-import config
 import sys
 
 class MongoConnector:
 
     __db = None
+    __mongoConnection = 'mongodb+srv://admin:r47eTLplxKiEp4Jj@amzdlsd01-qfqmt.mongodb.net/authSource=amzdlsd01&retryWrites=true&w=majority'
 
     def __init__(self):
-        client = MongoClient(config.MONGO_URL, ssl=True)
+        client = MongoClient(self.__mongoConnection, ssl=True)
         self.__db = client['amzdlsd01']
 
     # insert items if the data input is consistent

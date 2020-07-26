@@ -12,6 +12,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler)
 import validators
+from amazon_bot.mongoConnector import MongoConnector
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -26,20 +27,16 @@ message = {
     'imagelink': ''
 } 
 
-messageToSend = {
-    'chat_id':'', 
-    'image_link':'', 
-    'text': '', 
-    'parse_mode': '', 
-    'reply_markup':'',
-}
+item_to_send_list = [] 
+
+messages_to_send_in_another_chann = []
 
 
-CHOOSING, MESSAGE_SWITCH, ASK_IMAGE, IMAGE= range(4)
+GET_LIST, SEND_MESSAGES, CHOOSING = range(3)
 
 def start(update, context):
-    print("eccolo")
-    reply_keyboard = [['Get Messages', 'WIP1', 'WIP2']]
+    print("mi hanno scritto")
+    reply_keyboard = [['Get Messages']]
     update.message.reply_text(
         'Hi, tell me what you want to do!',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
@@ -48,105 +45,78 @@ def start(update, context):
 
 def action_switcher(update, context):
     text = update.message.text
-    print(update, context)
     if text == 'Get Messages':
         reply_keyboard = [['Message 1', 'Message 2', 'Message 3']]
         update.message.reply_text(
         'which message?!',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-        return MESSAGE_SWITCH
+        return GET_LIST
 
-    elif text == 'WIP1':
-        print("ciao")
-    else: 
-        print("ciao")
+def get_list(update, context): 
+    mongoConn  = MongoConnector()
+    newDiffToMap = mongoConn.getLastItems('ITEMS_DIFF')  
+    send_messages(update, context, newDiffToMap)
 
-def get_messages(update, context): 
-    text = update.message.text
-    query = update.callback_query
-    if text == 'Message 1': 
-        update.message.reply_text('give me link, openlink, title, price, invecedi')
-        return ASK_IMAGE
-    elif text == 'Message 2': 
-        print("ciao")
-    else: 
-        print("ciao")
-
-def check_message(info):
-    numPattern = re.compile("^[0-9,.]+$")
-    returnVar = True 
-    returnVar = (numPattern.match(info[3]) and numPattern.match(info[4]))
-    returnVar = validators.url(info[0])
-    returnVar = validators.url(info[1])
-    return returnVar
-
-
-def save_body_ask_image(update, context): 
-    text = update.message.text
-    info = text.split('\n')
-    if(check_message(info)):
-        message['link'] = info[0]
-        message['amazonLink'] = info[1]
-        message['title'] = info[2]
-        message['price'] = info[3].replace(',','.')
-        message['invecedi'] = info[4].replace(',','.')
-        message['delta'] = ((float(message['invecedi']) - float(message['price']) / float(message['invecedi'])) * 100)
-        update.message.reply_text('great, now the image')
-        return IMAGE
-    else: 
-        update.message.reply_text('sorry, retry it')
-        return ASK_IMAGE
-   
-
-def save_image(update, context): 
-    image_id = update.message.photo[-1].file_id
-    message['image'] = image_id
-    send_message(update, context)
-
-def send_message(update, context):
+    
+def send_messages(update, context, item_to_send):
     chat_id = update.message.chat_id
-    text = f""" 
+    print(chat_id)
+    element = []
+    i = 0
+
+    for el in item_to_send: 
+        text = (f"""
   
 💰<b>OFFERTA BEST PRODUCTS</b>
-⚡️<b>{message['title']} </b>
+⚡️<b>{el['title']} </b>
 
-<b>💲 Prezzo Scontato: </b>{message['price']} €
-❌ Invece di: {message['invecedi']} €
-🔥 Risparmi: {message['delta']} % 
+<b>💲 Prezzo Scontato: </b>{el['price']}
+❌ Invece di: {"nonloso"} €
+🔥 Risparmi: {"deltadacreare"} % 
 
-👉 <a style="color:blue;">{message['link']}</a>
+👉 <a style="color:blue;">{el['affiliateLink']}</a>
 
-"""
-    #url_amazon = 'https://www.amazon.it/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=techdiscoun09-21&linkId=8928f8f9c6518b80a10fa5e7b70089f8&language=it_IT'
-    url_amazon = message['amazonLink']
-    keyboard = [
-        [InlineKeyboardButton(" 📲 Apri subito nell'app 🛒", url = url_amazon)], 
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    context.bot.sendPhoto(chat_id, message['image'], text, parse_mode = 'HTML',
-    disable_web_page_preview = False, disable_notification = False, reply_markup = reply_markup)
+""")
+        #url_amazon = 'https://www.amazon.it/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=techdiscoun09-21&linkId=8928f8f9c6518b80a10fa5e7b70089f8&language=it_IT'
+        url_amazon = el['affiliateLink']
+        keyboard = [
+            [InlineKeyboardButton(" 📲 Apri subito nell'app 🛒", url = url_amazon)], 
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        context.bot.sendPhoto(chat_id, el['imglink'], text, parse_mode = 'HTML',
+        disable_web_page_preview = False, disable_notification = False, reply_markup = reply_markup)
+        
+        new_element = {
+            'chat_id' : chat_id,
+            'image_link' : el['imglink'],
+            'text' : text,
+            'parse_mode' : 'HTML',
+            'reply_markup' : reply_markup,
+        }
     
-    messageToSend['chat_id'] = chat_id
-    messageToSend['image_link'] = message['image']
-    messageToSend['text'] = text
-    messageToSend['parse_mode'] = 'HTML'
-    messageToSend['reply_markup'] = reply_markup
+        messages_to_send_in_another_chann.append(new_element)
 
-    keyboardConfirm = [
-        [InlineKeyboardButton(" ✅ Invia nel canale ", callback_data = 'ok')], 
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboardConfirm)
-    context.bot.sendMessage(chat_id, "se il messaggio va bene invialo nel canale", reply_markup = reply_markup)
-    
+        print("hola estoy aqui")
+
+        keyboardConfirm = [
+            [InlineKeyboardButton(" ✅ Invia nel canale ", callback_data = "ok:"+ str(i))], 
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboardConfirm)
+        context.bot.sendMessage(chat_id, "se il messaggio va bene invialo nel canale", reply_markup = reply_markup)
+        i = i + 1 
     # DONE 
     return ConversationHandler.END
 
 def button(update, context):
-    query = update.callback_query
+    query = update.callback_query   
+    status = query.data.split(":")[0]
+    idx = query.data.split(":")[1]
+    
     query.answer()
-    if query.data == 'ok':
-        context.bot.sendPhoto('@amazontechdeals', messageToSend['image_link'], messageToSend['text'], parse_mode = messageToSend['parse_mode'],
-        disable_web_page_preview = False, disable_notification = False, reply_markup = messageToSend['reply_markup'])
+    if status == 'ok':
+        element = messages_to_send_in_another_chann[int(idx)]
+        context.bot.sendPhoto('@amazontechdeals', element['image_link'], element['text'], parse_mode = element['parse_mode'],
+        disable_web_page_preview = False, disable_notification = False, reply_markup = element['reply_markup'])
 
         query.edit_message_text(text="Inviato babe! (forse)".format(query.data))
     
@@ -172,10 +142,7 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            CHOOSING: [MessageHandler(Filters.regex('^(Get Messages|WIP1|WIP2)$'), action_switcher)],
-            MESSAGE_SWITCH: [MessageHandler(Filters.regex('^(Message 1|Message 2|Message 3)$'), get_messages)],
-            ASK_IMAGE: [MessageHandler(Filters.text, save_body_ask_image)], 
-            IMAGE: [MessageHandler(Filters.photo, save_image)]
+            CHOOSING: [MessageHandler(Filters.regex('^(Get Messages)$'), get_list)],
         },
         fallbacks=[MessageHandler(Filters.regex('^Done$'), done)]
     )
