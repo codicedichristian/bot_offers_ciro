@@ -73,7 +73,7 @@ def main():
     else: 
         print("there aren't diff, so we will not update ITEMS_DIFF")
     
-
+    mongo.deleteOlder('ITEMS_DIFF')  
     amListObj.closeDriver()
 
     ## __________ 

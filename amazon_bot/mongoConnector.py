@@ -11,10 +11,12 @@ class MongoConnector:
         client = MongoClient(config.MONGO_URL, ssl=True)
         self.__db = client['amzdlsd01']
 
+    # insert items if the data input is consistent
     def insertItems(self, data, collection): 
         res = self.__db[collection].insert_many(data)
         return res
 
+    # delete the last but two of items in the given collection
     def deleteOlder(self, collection): 
         listOfTimestamp = self.__db[collection].distinct("timestamp")
         lenOfTmp = len(listOfTimestamp)
@@ -26,12 +28,15 @@ class MongoConnector:
             except:
                 e = sys.exc_info()
                 print("problem with the deletemany query", e)
+        
+        print("delete older things of", collection)
         return 0
 
+    # get all items of given collection
     def getAllItems(self, collection): 
         return self.__db[collection].find({})
 
-    
+    # get the previus timestamp items of given collection
     def getPreviousItems(self, collection):
         listOfTimestamp = self.__db[collection].distinct("timestamp")
         lenOfTmp = len(listOfTimestamp)
@@ -41,6 +46,7 @@ class MongoConnector:
         else:
             return self.getAllItems(collection)
 
+    # get last timestamp items of a given collection
     def getLastItems(self, collection):
         listOfTimestamp = self.__db[collection].distinct("timestamp")
         lenOfTmp = len(listOfTimestamp)
