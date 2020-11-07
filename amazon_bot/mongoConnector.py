@@ -20,9 +20,9 @@ class MongoConnector:
     def deleteOlder(self, collection): 
         listOfTimestamp = self.__db[collection].distinct("timestamp")
         lenOfTmp = len(listOfTimestamp)
-        query_to_apply = { "timestamp" : { "$lt": int(listOfTimestamp[lenOfTmp - 2]) } }
 
         if(lenOfTmp > 2):
+            query_to_apply = { "timestamp" : { "$lt": int(listOfTimestamp[lenOfTmp - 2]) } }
             try:
                 self.__db[collection].delete_many(query_to_apply)
             except:

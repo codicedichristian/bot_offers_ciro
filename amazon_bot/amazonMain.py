@@ -5,6 +5,7 @@
 import json
 from amazonList import AmazonList
 from mongoConnector import MongoConnector
+import time
 
 def checkKey(dict, key): 
       
@@ -26,21 +27,21 @@ def myBeautifulDiff(oldItems, newItems):
 
 
 categories = (
-       "BEST_SELLER_GROCER_HOURLY_24H",
-       "BEST_SELLER_ELECTR_HOURLY_24H",
-       "BEST_SELLER_TOOLSS_HOURLY_24H",
-       "BEST_SELLER_KITCHE_HOURLY_24H",
-       "BEST_SELLER_COMPUT_HOURLY_24H",
-       "BEST_SELLER_SPORTS_HOURLY_24H",
-       "BEST_LAUNCH_GLOBAL_HOURLY",
-       "BEST_LAUNCH_ELECTR_HOURLY",
-       "BEST_LAUNCH_KITCHE_HOURLY",
-       "BEST_LAUNCH_FOODNB_HOURLY",
-       "BEST_SELLER_GROCER_HOURLY",
-       "BEST_SELLER_KITCHE_HOURLY",
-       "BEST_SELLER_LIGHTI_HOURLY",
-       "BEST_SELLER_ELECTR_HOURLY",
-       "BEST_SELLER_HCPHCP_HOURLY"
+        "BEST_SELLER_GROCER_HOURLY_24H",
+    #     "BEST_SELLER_ELECTR_HOURLY_24H",
+    #     "BEST_SELLER_TOOLSS_HOURLY_24H",
+    #     "BEST_SELLER_KITCHE_HOURLY_24H",
+    #     "BEST_SELLER_COMPUT_HOURLY_24H",
+    #     "BEST_SELLER_SPORTS_HOURLY_24H",
+    #   # "BEST_LAUNCH_GLOBAL_HOURLY",  # todo different scraping 
+    #    "BEST_LAUNCH_ELECTR_HOURLY",
+    #    "BEST_LAUNCH_KITCHE_HOURLY",
+    #    "BEST_LAUNCH_FOODNB_HOURLY",
+    #    "BEST_SELLER_GROCER_HOURLY",
+    #    "BEST_SELLER_KITCHE_HOURLY",
+    #    "BEST_SELLER_LIGHTI_HOURLY",
+    #    "BEST_SELLER_ELECTR_HOURLY",
+    #    "BEST_SELLER_HCPHCP_HOURLY"
     )
 
 diff_collection = "ITEMS_DIFF"
@@ -58,23 +59,27 @@ def main():
     #     items_from_amazon = amListObj.getNewList(category) ## return json obj list
     #     res = mongo.insertItems(items_from_amazon, category)
     #     print(res)
+    for category in categories:
 
-    # get list from amazon html
-    items_from_amazon = amListObj.getNewList('BEST_LAUNCH_GLOBAL_HOURLY')
-    ## put the list inside mongodb 
-    mongo.insertItems(items_from_amazon, 'BEST_LAUNCH_GLOBAL_HOURLY')
-    ## delete older ( three timestamp before)
-    items = mongo.deleteOlder('BEST_LAUNCH_GLOBAL_HOURLY')  
-    ## get differences 
-    diffToUpload = myBeautifulDiff(mongo.getPreviousItems('BEST_LAUNCH_GLOBAL_HOURLY'), mongo.getLastItems('BEST_LAUNCH_GLOBAL_HOURLY'))
+        # get list from amazon html
+        items_from_amazon = amListObj.getNewList(category)
+        ## put the list inside mongodb 
+        mongo.insertItems(items_from_amazon, category)
+        ## delete older ( three timestamp before)
+        items = mongo.deleteOlder(category)  
+        ## get differences 
+        diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category))
 
-    if(len(diffToUpload) > 0):
-        mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
-    else: 
-        print("there aren't diff, so we will not update ITEMS_DIFF")
+        if(len(diffToUpload) > 0):
+            mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
+        else: 
+            print("there aren't diff, so we will not update ITEMS_DIFF")
+        
+        
+
+        time.sleep(5)
+        
     
-    mongo.deleteOlder('ITEMS_DIFF')  
-    amListObj.closeDriver()
 
     ## __________ 
 

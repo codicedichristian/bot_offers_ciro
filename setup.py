@@ -26,7 +26,7 @@ requirements = requirements()
 UPSTREAM_URLLIB3_FLAG = '--with-upstream-urllib3'
 if UPSTREAM_URLLIB3_FLAG in sys.argv:
     sys.argv.remove(UPSTREAM_URLLIB3_FLAG)
-    requirements.append('urllib3 >= 1.19.1')
+    requirements.append('urllib3 == 1.19.1')
     packages = [x for x in packages if not x.startswith('telegram.vendor.ptb_urllib3')]
 
 with codecs.open('README.rst', 'r', 'utf-8') as fd:

@@ -70,9 +70,7 @@ def send_messages(update, context, item_to_send):
 💰<b>OFFERTA BEST PRODUCTS</b>
 ⚡️<b>{el['title']} </b>
 
-<b>💲 Prezzo Scontato: </b>{el['price']}
-❌ Invece di: {"nonloso"} €
-🔥 Risparmi: {"deltadacreare"} % 
+<b>🔥 Prezzo Scontato: </b>{el['price']}
 
 👉 <a style="color:blue;">{el['affiliateLink']}</a>
 
@@ -115,7 +113,9 @@ def button(update, context):
     query.answer()
     if status == 'ok':
         element = messages_to_send_in_another_chann[int(idx)]
-        context.bot.sendPhoto('@amazontechdeals', element['image_link'], element['text'], parse_mode = element['parse_mode'],
+        channel_nick = '@amazontechdeals2020' # this is for a public channel
+        channel_id = '-1001269605441'         # this is for a private channel 
+        context.bot.sendPhoto(channel_id, element['image_link'], element['text'], parse_mode = element['parse_mode'],
         disable_web_page_preview = False, disable_notification = False, reply_markup = element['reply_markup'])
 
         query.edit_message_text(text="Inviato babe! (forse)".format(query.data))
@@ -136,8 +136,8 @@ def error(update, context):
 
 def main():
     # Create the Updater and pass it your bot's token.
-    updater = Updater(token='1082786262:AAHUOgbsO1k7ybuCr3N1X_5WLWyW-ZE0WxI', use_context=True)
-
+    updater = Updater(token='1103532888:AAHToQgHOryMw1JPepltD07QIGC5hy_A3UI', use_context=True)
+        
     # handler
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],

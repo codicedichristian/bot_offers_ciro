@@ -46,7 +46,7 @@ class AmazonList:
         "BEST_SELLER_SPORTS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/sports/ref=zg_bsms_nav_s_1_s',
         
         ## BEST SELLER NEW LAUNCHED ITEMS HOURLY REFRESHED -- MEDIUM IMPORTANT 
-        "BEST_LAUNCH_GLOBAL_HOURLY" : 'https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8',
+     # "BEST_LAUNCH_GLOBAL_HOURLY" : 'https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8',
         "BEST_LAUNCH_ELECTR_HOURLY" : 'https://www.amazon.it/gp/bestsellers/boost/14606289031/ref=zg_bs_nav_1_boost',
         "BEST_LAUNCH_KITCHE_HOURLY" : 'https://www.amazon.it/gp/bestsellers/boost/14606298031/ref=zg_bs_nav_3_14606302031',
         "BEST_LAUNCH_FOODNB_HOURLY" : 'https://www.amazon.it/gp/bestsellers/boost/14606304031/ref=zg_bs_nav_1_boost',
@@ -91,7 +91,8 @@ class AmazonList:
     
     def __getimglink(self, li): 
         found = li.find('img')
-        return found['src'] if found else ""
+        # remove last piece to get high quality
+        return found['src'].replace("._AC_UL200_SR200,200_","") if found else ""
     
     def __getasin(self, link): 
         try:
@@ -113,7 +114,7 @@ class AmazonList:
         ## get the correct link and call the browser and do the request
         link_to_use = self.__categories[category_to_get]
         pageResult = driver.get(link_to_use)
-        timeout = 120
+        timeout = 220
         try:
             WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
         except TimeoutException:
