@@ -16,3 +16,6 @@ db.BEST_SELLER_LIGHTI_HOURLY.deleteMany({})
 db.BEST_SELLER_SPORTS_HOURLY_24H.deleteMany({})
 db.BEST_SELLER_TOOLSS_HOURLY_24H.deleteMany({})
 db.ITEMS_DIFF.deleteMany({})
+
+
+ttelegram9989
