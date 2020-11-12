@@ -2,7 +2,6 @@
 
 
 # ## new imports
-import json
 from amazonList import AmazonList
 from mongoConnector import MongoConnector
 import time

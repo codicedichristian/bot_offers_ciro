@@ -94,7 +94,7 @@ def send_messages(update, context, item_to_send):
     
         messages_to_send_in_another_chann.append(new_element)
 
-        print("hola estoy aqui")
+        print("sent object from mongo - check it out")
 
         keyboardConfirm = [
             [InlineKeyboardButton(" ✅ Invia nel canale ", callback_data = "ok:"+ str(i))], 
@@ -155,6 +155,7 @@ def main():
     # Start the Bot
     updater.start_polling()
 
+    print("started listening")
     # Run the bot until the user presses Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT
     updater.idle()

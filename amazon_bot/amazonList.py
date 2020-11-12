@@ -4,26 +4,26 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from itertools import *
 from item import Item
-import json
 import re
 import calendar;
 import time;
 
 
-
-
-CHROMEDRIVER_PATH = './chromedriver/chromedriver'
 WINDOW_SIZE = "1920,1080"
 
-chrome_options = Options()  
-chrome_options.add_argument("--headless")  
-chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_prefs = {}
+chrome_options.experimental_options["prefs"] = chrome_prefs
+chrome_prefs["profile.default_content_settings"] = {"images": 2}
+driver = webdriver.Chrome(options=chrome_options)
+#driver = webdriver.Chrome('/usr/bin/chromedriver')
 
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
 elements_to_return = 10
 # driver = webdriver.Chrome(
