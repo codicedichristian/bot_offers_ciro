@@ -26,10 +26,6 @@ driver = webdriver.Chrome(options=chrome_options)
 
 
 elements_to_return = 10
-# driver = webdriver.Chrome(
-#     # executable_path=CHROMEDRIVER_PATH,
-#     options=chrome_options
-# )
 
 
 class AmazonList:
@@ -118,13 +114,14 @@ class AmazonList:
         try:
             WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
         except TimeoutException:
+            print("timeout exception driver will be closed")
             driver.quit()
 
         # get the listed items from html
         itemObjList = []
         # some = driver.find_elements_by_xpath('//*[@class="zg-item-immersion"]')
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        print("im ready")
+        
         lilist = soup.find_all('span', class_='a-list-item')
         for li in lilist:
             position = self.__getposition(li)

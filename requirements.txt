@@ -1,6 +1,12 @@
-future>=0.16.0
-certifi
-tornado>=5.1
+
+selenium
+bs4
+pymongo
+dnspython
+future
+telegram
 cryptography
-decorator>=4.4.0
-urllib3==1.20
+decorator
+certifi
+tornado
+validators

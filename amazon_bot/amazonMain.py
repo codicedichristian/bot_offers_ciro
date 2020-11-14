@@ -27,20 +27,20 @@ def myBeautifulDiff(oldItems, newItems):
 
 categories = (
         "BEST_SELLER_GROCER_HOURLY_24H",
-    #     "BEST_SELLER_ELECTR_HOURLY_24H",
-    #     "BEST_SELLER_TOOLSS_HOURLY_24H",
-    #     "BEST_SELLER_KITCHE_HOURLY_24H",
-    #     "BEST_SELLER_COMPUT_HOURLY_24H",
-    #     "BEST_SELLER_SPORTS_HOURLY_24H",
+        "BEST_SELLER_ELECTR_HOURLY_24H",
+        "BEST_SELLER_TOOLSS_HOURLY_24H",
+        "BEST_SELLER_KITCHE_HOURLY_24H",
+        "BEST_SELLER_COMPUT_HOURLY_24H",
+        "BEST_SELLER_SPORTS_HOURLY_24H",
     #   # "BEST_LAUNCH_GLOBAL_HOURLY",  # todo different scraping 
-    #    "BEST_LAUNCH_ELECTR_HOURLY",
-    #    "BEST_LAUNCH_KITCHE_HOURLY",
-    #    "BEST_LAUNCH_FOODNB_HOURLY",
-    #    "BEST_SELLER_GROCER_HOURLY",
-    #    "BEST_SELLER_KITCHE_HOURLY",
-    #    "BEST_SELLER_LIGHTI_HOURLY",
-    #    "BEST_SELLER_ELECTR_HOURLY",
-    #    "BEST_SELLER_HCPHCP_HOURLY"
+       "BEST_LAUNCH_ELECTR_HOURLY",
+       "BEST_LAUNCH_KITCHE_HOURLY",
+       "BEST_LAUNCH_FOODNB_HOURLY",
+       "BEST_SELLER_GROCER_HOURLY",
+       "BEST_SELLER_KITCHE_HOURLY",
+       "BEST_SELLER_LIGHTI_HOURLY",
+       "BEST_SELLER_ELECTR_HOURLY",
+       "BEST_SELLER_HCPHCP_HOURLY"
     )
 
 diff_collection = "ITEMS_DIFF"
@@ -59,12 +59,13 @@ def main():
     #     res = mongo.insertItems(items_from_amazon, category)
     #     print(res)
     for category in categories:
-
+        print("getting new list from: ", category)
         # get list from amazon html
         items_from_amazon = amListObj.getNewList(category)
         ## put the list inside mongodb 
         mongo.insertItems(items_from_amazon, category)
         ## delete older ( three timestamp before)
+        print("deleting older objects from: ", category)
         items = mongo.deleteOlder(category)  
         ## get differences 
         diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category))

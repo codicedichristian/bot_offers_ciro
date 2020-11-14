@@ -1,10 +1,14 @@
 import time 
 import amazonMain
 
+
 def update():
+    times=0
     while True:
+        times=times+1
+        print("launching... ", times)
         amazonMain.main()
-        print("launched")
+        print("launched!! going to sleep 7200sec")
         time.sleep(7200)
 
 
