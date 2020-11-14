@@ -29,7 +29,7 @@ elements_to_return = 10
 
 
 class AmazonList:
-    __affiliate_id = "techdiscoun09-21"
+    __affiliate_id = "dealsitalia0f-21"
     __items_to_get = 5
     # URL USED -> MAYBE COULD BE TRANSFERRED IN AN EXCEL FILE -> TO DO? 
     __categories = {
