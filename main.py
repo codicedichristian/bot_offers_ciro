@@ -30,27 +30,40 @@ message = {
 item_to_send_list = [] 
 
 messages_to_send_in_another_chann = []
+replykbrd = [['Get tech',
+    'Get tech 24h',
+    'Get Messages',
+    'Get grocery 24h',
+    'Get kitchen 24h',
+    'Get kitchen'],
+    [
+    'Get tools 24h',
+    'Get computer 24h',
+    'Get sports 24h',
+    'Get foodnb',
+    'Get lights',
+    'Get hcp'
+    ]]
 
-
-GET_LIST, SEND_MESSAGES, CHOOSING = range(3)
+GET_LIST, GET_TECH_LIST, SEND_MESSAGES, CHOOSING = range(4)
 
 def start(update, context):
     print("mi hanno scritto")
-    reply_keyboard = [['Get Messages']]
+    reply_keyboard = replykbrd
     update.message.reply_text(
         'Hi, tell me what you want to do!',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-
+    
     return CHOOSING
 
 def action_switcher(update, context):
     text = update.message.text
-    if text == 'Get Messages':
-        reply_keyboard = [['Message 1', 'Message 2', 'Message 3']]
-        update.message.reply_text(
-        'which message?!',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-        return GET_LIST
+    mongoConn  = MongoConnector()
+    newDiffToMap = mongoConn.getLastItems(text, True)  
+    send_messages(update, context, newDiffToMap)
+    
+    return
+    
 
 def get_list(update, context): 
     mongoConn  = MongoConnector()
@@ -142,7 +155,9 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            CHOOSING: [MessageHandler(Filters.regex('^(Get Messages)$'), get_list)],
+            CHOOSING: [
+                MessageHandler(Filters.regex('^(.*)$'), action_switcher)
+            ],
         },
         fallbacks=[MessageHandler(Filters.regex('^Done$'), done)]
     )

@@ -68,7 +68,7 @@ def main():
         print("deleting older objects from: ", category)
         items = mongo.deleteOlder(category)  
         ## get differences 
-        diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category))
+        diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category, False))
 
         if(len(diffToUpload) > 0):
             mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
