@@ -29,7 +29,7 @@ message = {
 
 item_to_send_list = [] 
 
-messages_to_send_in_another_chann = []
+messages_to_send_in_another_chann = {}
 replykbrd = [['Get tech',
     'Get tech 24h',
     'Get Messages',
@@ -60,23 +60,22 @@ def action_switcher(update, context):
     text = update.message.text
     mongoConn  = MongoConnector()
     newDiffToMap = mongoConn.getLastItems(text, True)  
-    send_messages(update, context, newDiffToMap)
+    send_messages(update, context, newDiffToMap, text)
     
     return
     
 
-def get_list(update, context): 
-    mongoConn  = MongoConnector()
-    newDiffToMap = mongoConn.getLastItems('ITEMS_DIFF')  
-    send_messages(update, context, newDiffToMap)
+# def get_list(update, context): 
+#     mongoConn  = MongoConnector()
+#     newDiffToMap = mongoConn.getLastItems('ITEMS_DIFF')  
+#     send_messages(update, context, newDiffToMap)
 
     
-def send_messages(update, context, item_to_send):
+def send_messages(update, context, item_to_send, textInputMsg = 'default'):
     chat_id = update.message.chat_id
-    print(chat_id)
+    messages_to_send_in_another_chann.update({str(textInputMsg): []})
     element = []
-    i = 0
-
+    i = 0 
     for el in item_to_send: 
         text = (f"""
   
@@ -94,8 +93,9 @@ def send_messages(update, context, item_to_send):
             [InlineKeyboardButton(" 📲 Apri subito nell'app 🛒", url = url_amazon)], 
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        context.bot.sendPhoto(chat_id, el['imglink'], text, parse_mode = 'HTML',
-        disable_web_page_preview = False, disable_notification = False, reply_markup = reply_markup)
+        if(el['imglink'] != ''):
+            context.bot.sendPhoto(chat_id, el['imglink'], text, parse_mode = 'HTML',
+            disable_web_page_preview = False, disable_notification = False, reply_markup = reply_markup)
         
         new_element = {
             'chat_id' : chat_id,
@@ -104,17 +104,19 @@ def send_messages(update, context, item_to_send):
             'parse_mode' : 'HTML',
             'reply_markup' : reply_markup,
         }
-    
-        messages_to_send_in_another_chann.append(new_element)
+            
+        tmp_values = messages_to_send_in_another_chann[textInputMsg]
+        tmp_values.append(new_element)
+        messages_to_send_in_another_chann.update({str(textInputMsg): tmp_values })
 
         print("sent object from mongo - check it out")
 
         keyboardConfirm = [
-            [InlineKeyboardButton(" ✅ Invia nel canale ", callback_data = "ok:"+ str(i))], 
+            [InlineKeyboardButton(" ✅ Invia nel canale ", callback_data = "ok:"+ str(i) + ":" + str(textInputMsg))], 
         ]
         reply_markup = InlineKeyboardMarkup(keyboardConfirm)
         context.bot.sendMessage(chat_id, "se il messaggio va bene invialo nel canale", reply_markup = reply_markup)
-        i = i + 1 
+        i = i+1
     # DONE 
     return ConversationHandler.END
 
@@ -122,10 +124,11 @@ def button(update, context):
     query = update.callback_query   
     status = query.data.split(":")[0]
     idx = query.data.split(":")[1]
-    
+    text = query.data.split(":")[2]
     query.answer()
     if status == 'ok':
-        element = messages_to_send_in_another_chann[int(idx)]
+        element_array = messages_to_send_in_another_chann[text]
+        element = element_array[int(idx)]
         channel_nick = '@amazontechdeals2020' # this is for a public channel
         channel_id = '-1001269605441'         # this is for a private channel 
         context.bot.sendPhoto(channel_id, element['image_link'], element['text'], parse_mode = element['parse_mode'],
