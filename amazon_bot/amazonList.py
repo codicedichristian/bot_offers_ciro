@@ -1,4 +1,5 @@
 from selenium import webdriver
+from pyvirtualdisplay import Display
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,15 +15,20 @@ import time;
 
 WINDOW_SIZE = "1920,1080"
 
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_prefs = {}
-chrome_options.experimental_options["prefs"] = chrome_prefs
-chrome_prefs["profile.default_content_settings"] = {"images": 2}
-driver = webdriver.Chrome(options=chrome_options)
-#driver = webdriver.Chrome('/usr/bin/chromedriver')
+# chrome_options = Options()
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--no-sandbox")
+# chrome_options.add_argument("--disable-dev-shm-usage")
+# chrome_prefs = {}
+# chrome_options.experimental_options["prefs"] = chrome_prefs
+# chrome_prefs["profile.default_content_settings"] = {"images": 2}
+# driver = webdriver.Chrome(options=chrome_options)
+# #driver = webdriver.Chrome('/usr/bin/chromedriver')
+
+display = Display(visible=0, size=(800, 600))
+display.start()
+
+driver = webdriver.Firefox()
 
 
 elements_to_return = 10

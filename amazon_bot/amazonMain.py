@@ -20,7 +20,6 @@ def myBeautifulDiff(oldItems, newItems):
     for item in list(newItems):
         if item['asin'] not in asins:
             diff.append(item)
-    print(diff)
     return diff
 
 
