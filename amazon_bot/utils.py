@@ -38,16 +38,16 @@ messageToCategory = {
 
 reply_keyboard = [
     [
-    'Get tech',
-    'Get tech 24h',
-    'Get Messages',
-    'Get grocery 24h',
-    'Get kitchen 24h',
-    'Get kitchen',
-    'Get tools 24h',
-    'Get computer 24h',
-    'Get sports 24h',
-    'Get foodnb',
-    'Get lights',
-    'Get hcp'
+        'Get tech',
+        'Get tech 24h',
+        'Get Messages',
+        'Get grocery 24h',
+        'Get kitchen 24h',
+        'Get kitchen',
+        'Get tools 24h',
+        'Get computer 24h',
+        'Get sports 24h',
+        'Get foodnb',
+        'Get lights',
+        'Get hcp'
     ]]
