@@ -174,7 +174,7 @@ class AmazonList:
             
                     #cut first n elements
                     
-                return itemObjList[:elements_to_return]
+                return itemObjList[:15]
 
         else:
             try:
