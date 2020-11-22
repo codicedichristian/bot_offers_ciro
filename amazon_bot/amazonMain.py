@@ -25,30 +25,22 @@ def myBeautifulDiff(oldItems, newItems):
 
 
 categories = (
+        "DEALS_GENERAL",
         "BEST_SELLER_GROCER_HOURLY_24H",
         "BEST_SELLER_ELECTR_HOURLY_24H",
         "BEST_SELLER_TOOLSS_HOURLY_24H",
         "BEST_SELLER_KITCHE_HOURLY_24H",
         "BEST_SELLER_COMPUT_HOURLY_24H",
         "BEST_SELLER_SPORTS_HOURLY_24H",
-    #   # "BEST_LAUNCH_GLOBAL_HOURLY",  # todo different scraping 
-       "BEST_LAUNCH_ELECTR_HOURLY",
-       "BEST_LAUNCH_KITCHE_HOURLY",
-       "BEST_LAUNCH_FOODNB_HOURLY",
-       "BEST_SELLER_GROCER_HOURLY",
-       "BEST_SELLER_KITCHE_HOURLY",
-       "BEST_SELLER_LIGHTI_HOURLY",
-       "BEST_SELLER_ELECTR_HOURLY",
-       "BEST_SELLER_HCPHCP_HOURLY"
+        "BEST_SELLER_BELLEZ_HOURLY_24H",
+        "BEST_SELLER_GAMESS_HOURLY_24H",
+        
     )
 
 diff_collection = "ITEMS_DIFF"
     
 
-    
-
 def main():
-
 
     amListObj = AmazonList()
     mongo = MongoConnector()
@@ -77,27 +69,8 @@ def main():
         
 
         time.sleep(5)
-        
-    
 
-    ## __________ 
-
-    # - i diff li mettiamo tutti nella stessa collection "diff" 
-    # - gestire i diff (solo una collection o piu' collections?/inserire la version?)
-    # - gestire le versioni dei diff se si vuole... oppure si cancella tutto ogni giro
-    # - rimettere in piedi il loop e fare una bella prova con i diff compresi!
-    # - guardare come farlo fare automatico ogni due ore
-
-    # - fatto questo bisogna attaccare il bot che si legge gli elementi dal diff e che li sputa in un formato bello (con il bottone pubblica)
-
-    # - finito tutto colleghiamo i pezzi: 
-    #     1- tirare nuova lista giu di 5 elementi da amazon ogni 2 ore
-    #     2- confrontare con la lista presente su mongo
-    #     3- tirare fuori le diff e metterle sulla collection diff
-    
-    # - bot che ogni 2 ore e 15 min controlla la lista diff e spara sulla chat personale i prodotti :) 
-    
-
+    amListObj.closeDriver()
 
 if __name__ == '__main__':
     main()

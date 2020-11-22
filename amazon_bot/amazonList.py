@@ -12,9 +12,6 @@ import re
 import calendar;
 import time;
 
-
-WINDOW_SIZE = "1920,1080"
-
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
@@ -24,22 +21,12 @@ chrome_options.experimental_options["prefs"] = chrome_prefs
 chrome_prefs["profile.default_content_settings"] = {"images": 2}
 driver = webdriver.Chrome(options=chrome_options)
 # #driver = webdriver.Chrome('/usr/bin/chromedriver')
-
-#display = Display(visible=0, size=(800, 600))
-#display.start()
-
-#driver = webdriver.Firefox()
-
-
 elements_to_return = 10
 
 
 class AmazonList:
     __affiliate_id = "dealsitalia0f-21"
-    __items_to_get = 5
-    # URL USED -> MAYBE COULD BE TRANSFERRED IN AN EXCEL FILE -> TO DO? 
     __categories = {
-        ## BEST SELLER 24H HOURLY REFRESHED -- IMPORTANT
      #todo "BEST_SELLER_GROCER_HOURLY_24H" : "https://www.amazon.it/blackfriday/ref=gbps_fcr___wht_52399703?nocache=1605438649865&gb_f_GB-SUPPLE=dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,sortOrder:BY_DISCOUNT_DESCENDING,priceRanges:20-50,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,minRating:3,discountRanges:10-25%252C25-50%252C50-70%252C70-,enforcedCategories:1497228031%252C524015031%252C2844433031%252C435504031%252C425916031%252C473365031%252C412609031%252C2454160031%252C6377736031%252C6198092031%252C732998031%252C473287031%252C635016031%252C435505031%252C524009031%252C524012031%252C524006031%252C412603031%252C12472499031%252C1571292031%252C14437356031&ie=UTF8",    
         "BEST_SELLER_GROCER_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/grocery/ref=zg_bsms_nav_0',
         "BEST_SELLER_KITCHE_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/kitchen/ref=zg_bsms_nav_gro_1_gro', 
@@ -47,20 +34,10 @@ class AmazonList:
         "BEST_SELLER_TOOLSS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/tools/ref=zg_bsms_nav_ce_1_ce',
         "BEST_SELLER_COMPUT_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/pc/ref=zg_bsms_nav_light_1_light',
         "BEST_SELLER_SPORTS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/sports/ref=zg_bsms_nav_s_1_s',
-        
-        ## BEST SELLER NEW LAUNCHED ITEMS HOURLY REFRESHED -- MEDIUM IMPORTANT 
-     # "BEST_LAUNCH_GLOBAL_HOURLY" : 'https://www.amazon.it/gp/goldbox/ref=gbpp_itr_s-4_f9e9_TDLDS?&gb_f_deals1=dealTypes:LIGHTNING_DEAL&gb_ttl_deals1=Offerte%2520Lampo&ie=UTF8',
-        "BEST_LAUNCH_ELECTR_HOURLY" : 'https://www.amazon.it/gp/bestsellers/boost/14606289031/ref=zg_bs_nav_1_boost',
-        "BEST_LAUNCH_KITCHE_HOURLY" : 'https://www.amazon.it/gp/bestsellers/boost/14606298031/ref=zg_bs_nav_3_14606302031',
-        "BEST_LAUNCH_FOODNB_HOURLY" : 'https://www.amazon.it/gp/bestsellers/boost/14606304031/ref=zg_bs_nav_1_boost',
-        
-        ## BEST SELLER OF ALWAYS HOURLY REFRESHED -- LESS IMPORTANT
-        "BEST_SELLER_GROCER_HOURLY" : "https://www.amazon.it/gp/bestsellers/grocery/ref=zg_bs_nav_0",
-        "BEST_SELLER_KITCHE_HOURLY" : "https://www.amazon.it/gp/bestsellers/kitchen/ref=zg_bs_nav_0",
-        "BEST_SELLER_LIGHTI_HOURLY" : "https://www.amazon.it/gp/bestsellers/lighting/ref=zg_bs_nav_0",
-        "BEST_SELLER_ELECTR_HOURLY" : "https://www.amazon.it/gp/bestsellers/electronics/ref=zg_bs_nav_0",
-        "BEST_SELLER_HCPHCP_HOURLY" : "https://www.amazon.it/gp/bestsellers/hpc/ref=zg_bs_nav_0"
-    }
+        "BEST_SELLER_BELLEZ_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/beauty/ref=zg_bsms_nav_gc_1_gc',
+        "BEST_SELLER_GAMESS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/videogames/ref=zg_bsms_nav_s_1_s',
+        "DEALS_GENERAL": "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___page_1?gb_f_GB-SUPPLE=dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,page:2,sortOrder:BY_DISCOUNT_DESCENDING,enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C412603031%252C2844433031,discountRanges:25-50%252C50-70%252C70-,minRating:4,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,dealsPerPage:40&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8"
+   }
 
     # grouped array with this function 
     def __chunk(self, it, size):
@@ -99,18 +76,53 @@ class AmazonList:
     
     def __getasin(self, link): 
         try:
-            asin_found = re.search('/dp/(.+?)/ref', link).group(1)
+            asin_found = re.search('(dp|deal)\/(.+?)\/ref', link).group(2)
         except AttributeError:
             asin_found = ''
         return asin_found
 
-    def __getaffiliatelink(self, asin): 
-        base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
-        return base_link.replace("ASIN_TO_INCLUDE", asin)
-    
+    def __getaffiliatelink(self, asin, link): 
+        if "/dp/" in link: 
+            base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
+            return base_link.replace("ASIN_TO_INCLUDE", asin)
+        if "/deal" in link: 
+            base_link = "https://www.amazon.it/deal/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
+            return base_link.replace("ASIN_TO_INCLUDE", asin)
+        return ""
+        
     def __getTimesmp(self):
         ts = calendar.timegm(time.gmtime())
         return ts
+    
+    def __getDealslink(self, li):
+        found = li.find('a', class_="a-link-normal")
+        return found.get('href') if found else ""
+
+    def __getDealsPrezzoOfferta(self, li):
+        found = li.find('span', class_="dealPriceText")
+        return found.string if found else ""
+
+    def __getDealsInveceDi(self, li): 
+        completo = ""
+        found = li.find("div", class_="a-spacing-top-mini")
+        if found: 
+            spans = found.find_all('span')
+            for span in spans: 
+                replacedSpan = span.text.replace(":","").replace("\n","").replace(" ","")
+                completo = completo + replacedSpan + ":"
+        return completo.replace("\n", "")
+
+    def __getDealsTitle(self, li): 
+        found = li.find('a', class_="singleCellTitle").find('span')
+        if found:
+            return found.string.replace('\n', '')
+        else: return ""
+    
+    def __getDealsImgLink(self, li):
+        found = li.find("img")
+        #print(found['src']) if found else print("")
+        #print(re.sub("(\._.*_.jpg)", ".jpg", found['src']))
+        return re.sub("(\._.*_.jpg)", ".jpg", found['src']) if found else "" 
 
     def getNewList(self, category_to_get): 
 
@@ -118,47 +130,95 @@ class AmazonList:
         link_to_use = self.__categories[category_to_get]
         pageResult = driver.get(link_to_use)
         timeout = 220
-        try:
-            WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
-        except TimeoutException:
-            print("timeout exception driver will be closed")
-            driver.quit()
-
-        # get the listed items from html
-        itemObjList = []
-        # some = driver.find_elements_by_xpath('//*[@class="zg-item-immersion"]')
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        
-        lilist = soup.find_all('span', class_='a-list-item')
-        for li in lilist:
-            position = self.__getposition(li)
-            title    = self.__gettitle(li)
-            reviews  = self.__getreviews(li)
-            price    = self.__getprice(li)
-            imglink  = self.__getimglink(li)
-            link     = self.__getlink(li) ## not used in the object but useful to create other values (afflink, asin)
-            asin     = self.__getasin(link)
-            affLink  = self.__getaffiliatelink(asin)
-            timesmp  = self.__getTimesmp()
+        if "DEALS" in category_to_get: 
+            try:
+                print("get objs from deals link")
+                WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
+            except TimeoutException:
+                print("timeout exception driver will be closed")
+                driver.quit()
             
+            # get the listed items from html
+            itemObjList = []
+            soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-            # object that will be pushed on mongodb
-            itemToPush = {
-                "position"      : position,
-                "title"         : title, 
-                "reviews"       : reviews,
-                "price"         : price, 
-                "imglink"       : imglink, 
-                "link"          : link,
-                "asin"          : asin,
-                "affiliateLink" : affLink, 
-                "timestamp"     : timesmp
-            }
+            lilist = soup.find_all('div', "singleCell")
+            if(len(lilist) == 0): 
+                print("nothing") 
+                return
+            else:
+                for li in lilist:
+                    link = self.__getDealslink(li)
+                    price = self.__getDealsPrezzoOfferta(li)
+                    inveceDi= self.__getDealsInveceDi(li)
+                    title= self.__getDealsTitle(li)
+                    asin = self.__getasin(link)
+                    affLink  = self.__getaffiliatelink(asin, link)
+                    timesmp  = self.__getTimesmp()
+                    imgLink = self.__getDealsImgLink(li)
+                  
+                    itemToPush = {
+                            "position"      : "",
+                            "title"         : title, 
+                            "reviews"       : "",
+                            "price"         : price, 
+                            "imglink"       : imgLink, 
+                            "link"          : link,
+                            "asin"          : asin,
+                            "affiliateLink" : affLink, 
+                            "timestamp"     : timesmp,
+                            "inveceDi"      : inveceDi, 
+                        }
 
-            itemObjList.append(itemToPush)
-        
-        #cut first n elements
-        return itemObjList[:elements_to_return]
+                    itemObjList.append(itemToPush)
+            
+                    #cut first n elements
+                    
+                return itemObjList[:elements_to_return]
+
+        else:
+            try:
+                WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
+            except TimeoutException:
+                print("timeout exception driver will be closed")
+                driver.quit()
+
+            # get the listed items from html
+            itemObjList = []
+            # some = driver.find_elements_by_xpath('//*[@class="zg-item-immersion"]')
+            soup = BeautifulSoup(driver.page_source, 'html.parser')
+            
+            lilist = soup.find_all('span', class_='a-list-item')
+            for li in lilist:
+                position = self.__getposition(li)
+                title    = self.__gettitle(li)
+                reviews  = self.__getreviews(li)
+                price    = self.__getprice(li)
+                imglink  = self.__getimglink(li)
+                link     = self.__getlink(li) ## not used in the object but useful to create other values (afflink, asin)
+                asin     = self.__getasin(link)
+                affLink  = self.__getaffiliatelink(asin, link)
+                timesmp  = self.__getTimesmp()
+                
+
+                # object that will be pushed on mongodb
+                itemToPush = {
+                    "position"      : position,
+                    "title"         : title, 
+                    "reviews"       : reviews,
+                    "price"         : price, 
+                    "imglink"       : imglink, 
+                    "link"          : link,
+                    "asin"          : asin,
+                    "affiliateLink" : affLink, 
+                    "timestamp"     : timesmp,
+                    "inveceDi"      : "",
+                }
+
+                itemObjList.append(itemToPush)
+            
+            #cut first n elements
+            return itemObjList[:elements_to_return]
 
    
 

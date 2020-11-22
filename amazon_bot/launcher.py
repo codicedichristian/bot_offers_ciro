@@ -1,6 +1,7 @@
 import time 
 import amazonMain
-
+import signal
+import sys
 
 def update():
     times=0
@@ -8,8 +9,10 @@ def update():
         times=times+1
         print("launching... ", times)
         amazonMain.main()
-        print("launched!! going to sleep 7200sec")
-        time.sleep(7200)
+        print("launched!! going to sleep 1800")
+        time.sleep(1800)
+
+
 
 
 if __name__ == '__main__':

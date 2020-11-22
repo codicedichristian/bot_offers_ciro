@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# This program is dedicated to the public domain under the CC0 license.
 
-"""
-Basic example for a bot that uses inline keyboards.
-"""
 import logging
 import telegram
 import re
@@ -18,6 +14,22 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+replykbrd = [
+    [
+        'BEST DEALS',
+        'Get tech 24h',
+        'Get Messages',
+        'Get grocery 24h',
+        'Get kitchen 24h',
+        'Get bel 24h'
+    ],
+    [
+        'Get tools 24h',
+        'Get computer 24h',
+        'Get sports 24h',
+    ]
+]
+
 message = {
     'link': '', 
     'amazonLink': '',
@@ -30,20 +42,7 @@ message = {
 item_to_send_list = [] 
 
 messages_to_send_in_another_chann = {}
-replykbrd = [['Get tech',
-    'Get tech 24h',
-    'Get Messages',
-    'Get grocery 24h',
-    'Get kitchen 24h',
-    'Get kitchen'],
-    [
-    'Get tools 24h',
-    'Get computer 24h',
-    'Get sports 24h',
-    'Get foodnb',
-    'Get lights',
-    'Get hcp'
-    ]]
+
 
 GET_LIST, GET_TECH_LIST, SEND_MESSAGES, CHOOSING = range(4)
 
@@ -77,7 +76,29 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
     element = []
     i = 0 
     for el in item_to_send: 
-        text = (f"""
+        if(el['inveceDi'] != ""):
+            prezzoListino = el['inveceDi'].split(':')[1]
+            prezzoPulito = prezzoListino.replace(",",".").replace("€","")
+            if("-" in el['price']): 
+                scontato = el['price'].split("-")[0] 
+            else: 
+                scontato = el['price']
+            sconto = el['inveceDi'].split(':')[2].replace("(", "").replace(")","").replace("-","")
+            title = el['title'].lstrip()
+            text = (f"""
+  
+💰<b>OFFERTA BEST PRODUCTS</b>
+⚡️<b>{title} </b>
+
+<b>🔥 Prezzo Scontato: </b>{scontato}
+<b>❌ Invece Di: </b>{prezzoListino}
+<b>📈 Sconto del: </b>{sconto}
+
+👉 <a style="color:blue;">{el['affiliateLink']}</a>
+
+""")    
+        else: 
+            text = (f"""
   
 💰<b>OFFERTA BEST PRODUCTS</b>
 ⚡️<b>{el['title']} </b>
@@ -86,7 +107,7 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
 
 👉 <a style="color:blue;">{el['affiliateLink']}</a>
 
-""")
+""")    
         #url_amazon = 'https://www.amazon.it/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=techdiscoun09-21&linkId=8928f8f9c6518b80a10fa5e7b70089f8&language=it_IT'
         url_amazon = el['affiliateLink']
         keyboard = [
