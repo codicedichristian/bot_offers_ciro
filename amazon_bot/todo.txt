@@ -1,3 +1,4 @@
 modifiche che bisogna fare :   
+- trovari nuovi link da screpare
 - cercare di esternalizzare alcune cose su mongodb come configs 
 - fare scraping di offerte a tempo (link todo)

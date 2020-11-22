@@ -6,18 +6,16 @@ import sys
 class MongoConnector:
 
     __messageToCategory = {
-        "Get tech" : "BEST_LAUNCH_ELECTR_HOURLY",
-        "Get tech 24h" : "BEST_SELLER_ELECTR_HOURLY_24H",
-        "Get Messages":"ITEMS_DIFF", 
-        "Get grocery 24h":"BEST_SELLER_GROCER_HOURLY_24H", 
-        "Get kitchen 24h":"BEST_SELLER_KITCHE_HOURLY_24H", 
-        "Get kitchen":"BEST_LAUNCH_KITCHE_HOURLY", 
-        "Get tools 24h":"BEST_SELLER_TOOLSS_HOURLY_24H", 
-        "Get computer 24h":"BEST_SELLER_COMPUT_HOURLY_24H", 
-        "Get sports 24h":"BEST_SELLER_SPORTS_HOURLY_24H", 
-        "Get foodnb":"BEST_LAUNCH_FOODNB_HOURLY", 
-        "Get lights":"BEST_SELLER_LIGHTI_HOURLY",
-        "Get hcp":"BEST_SELLER_HCPHCP_HOURLY"
+        "BEST DEALS"       : "DEALS_GENERAL",
+        "Get tech 24h"     : "BEST_SELLER_ELECTR_HOURLY_24H",
+        "Get Messages"     : "ITEMS_DIFF", 
+        "Get grocery 24h"  : "BEST_SELLER_GROCER_HOURLY_24H", 
+        "Get kitchen 24h"  : "BEST_SELLER_KITCHE_HOURLY_24H", 
+        "Get tools 24h"    : "BEST_SELLER_TOOLSS_HOURLY_24H", 
+        "Get computer 24h" : "BEST_SELLER_COMPUT_HOURLY_24H", 
+        "Get sports 24h"   : "BEST_SELLER_SPORTS_HOURLY_24H", 
+        "Get bel 24h"      : "BEST_SELLER_BELLEZ_HOURLY_24H",
+        "Get games 24h"    : "BEST_SELLER_GAMESS_HOURLY_24H",
     }
 
     __db = None
