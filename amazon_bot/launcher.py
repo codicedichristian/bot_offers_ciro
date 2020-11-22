@@ -9,10 +9,8 @@ def update():
         times=times+1
         print("launching... ", times)
         amazonMain.main()
-        print("launched!! going to sleep 1800")
+        print("launched!! going to sleep 1800sec")
         time.sleep(1800)
-
-
 
 
 if __name__ == '__main__':
