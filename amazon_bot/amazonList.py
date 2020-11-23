@@ -12,19 +12,20 @@ import re
 import calendar;
 import time;
 
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_prefs = {}
-chrome_options.experimental_options["prefs"] = chrome_prefs
-chrome_prefs["profile.default_content_settings"] = {"images": 2}
-driver = webdriver.Chrome(options=chrome_options)
-# #driver = webdriver.Chrome('/usr/bin/chromedriver')
-elements_to_return = 10
-
 
 class AmazonList:
+
+    __chrome_options = Options()
+    __chrome_options.add_argument("--headless")
+    __chrome_options.add_argument("--no-sandbox")
+    __chrome_options.add_argument("--disable-dev-shm-usage")
+    __chrome_prefs = {}
+    __chrome_options.experimental_options["prefs"] = self.__chrome_prefs
+    __chrome_prefs["profile.default_content_settings"] = {"images": 2}
+    __driver = webdriver.Chrome(options=self.__chrome_options)
+    # #driver = webdriver.Chrome('/usr/bin/chromedriver')
+    __elements_to_return = 10
+
     __affiliate_id = "dealsitalia0f-21"
     __categories = {
      #todo "BEST_SELLER_GROCER_HOURLY_24H" : "https://www.amazon.it/blackfriday/ref=gbps_fcr___wht_52399703?nocache=1605438649865&gb_f_GB-SUPPLE=dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,sortOrder:BY_DISCOUNT_DESCENDING,priceRanges:20-50,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,minRating:3,discountRanges:10-25%252C25-50%252C50-70%252C70-,enforcedCategories:1497228031%252C524015031%252C2844433031%252C435504031%252C425916031%252C473365031%252C412609031%252C2454160031%252C6377736031%252C6198092031%252C732998031%252C473287031%252C635016031%252C435505031%252C524009031%252C524012031%252C524006031%252C412603031%252C12472499031%252C1571292031%252C14437356031&ie=UTF8",    
@@ -128,7 +129,7 @@ class AmazonList:
 
         ## get the correct link and call the browser and do the request
         link_to_use = self.__categories[category_to_get]
-        pageResult = driver.get(link_to_use)
+        pageResult = self.__driver.get(link_to_use)
         timeout = 220
         if "DEALS" in category_to_get: 
             try:
@@ -218,7 +219,7 @@ class AmazonList:
                 itemObjList.append(itemToPush)
             
             #cut first n elements
-            return itemObjList[:elements_to_return]
+            return itemObjList[:self.__elements_to_return]
 
    
 
