@@ -110,11 +110,12 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
 
 """)    
         #url_amazon = 'https://www.amazon.it/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=techdiscoun09-21&linkId=8928f8f9c6518b80a10fa5e7b70089f8&language=it_IT'
-        url_amazon = affiliateLink
-        keyboard = [
-            [InlineKeyboardButton(" 📲 Apri subito nell'app 🛒", url = url_amazon)], 
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
+        if(affiliateLink != "NO LINK"):
+            url_amazon = affiliateLink
+            keyboard = [
+                [InlineKeyboardButton(" 📲 Apri subito nell'app 🛒", url = url_amazon)], 
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
         if(el['imglink'] != ''):
             context.bot.sendPhoto(chat_id, el['imglink'], text, parse_mode = 'HTML',
             disable_web_page_preview = False, disable_notification = False, reply_markup = reply_markup)
