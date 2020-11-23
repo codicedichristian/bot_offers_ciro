@@ -174,7 +174,7 @@ class AmazonList:
             
                     #cut first n elements
                     
-                return itemObjList[:15]
+                return itemObjList[:30]
 
         else:
             try:
