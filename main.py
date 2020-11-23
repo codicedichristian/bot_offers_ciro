@@ -85,6 +85,7 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
                 scontato = el['price']
             sconto = el['inveceDi'].split(':')[2].replace("(", "").replace(")","").replace("-","")
             title = el['title'].lstrip()
+            affiliateLink = el['affiliateLink'] if el['affiliateLink'] else "NO LINK"
             text = (f"""
   
 💰<b>OFFERTA BEST PRODUCTS</b>
@@ -105,11 +106,11 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
 
 <b>🔥 Prezzo Scontato: </b>{el['price']}
 
-👉 <a style="color:blue;">{el['affiliateLink']}</a>
+👉 <a style="color:blue;">{affiliateLink}</a>
 
 """)    
         #url_amazon = 'https://www.amazon.it/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=techdiscoun09-21&linkId=8928f8f9c6518b80a10fa5e7b70089f8&language=it_IT'
-        url_amazon = el['affiliateLink']
+        url_amazon = affiliateLink
         keyboard = [
             [InlineKeyboardButton(" 📲 Apri subito nell'app 🛒", url = url_amazon)], 
         ]
