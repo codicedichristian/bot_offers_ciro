@@ -20,9 +20,9 @@ class AmazonList:
     __chrome_options.add_argument("--no-sandbox")
     __chrome_options.add_argument("--disable-dev-shm-usage")
     __chrome_prefs = {}
-    __chrome_options.experimental_options["prefs"] = self.__chrome_prefs
+    __chrome_options.experimental_options["prefs"] = __chrome_prefs
     __chrome_prefs["profile.default_content_settings"] = {"images": 2}
-    __driver = webdriver.Chrome(options=self.__chrome_options)
+    __driver = webdriver.Chrome(options=__chrome_options)
     # #driver = webdriver.Chrome('/usr/bin/chromedriver')
     __elements_to_return = 10
 
@@ -134,14 +134,14 @@ class AmazonList:
         if "DEALS" in category_to_get: 
             try:
                 print("get objs from deals link")
-                WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
+                WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
             except TimeoutException:
                 print("timeout exception driver will be closed")
                 driver.quit()
             
             # get the listed items from html
             itemObjList = []
-            soup = BeautifulSoup(driver.page_source, 'html.parser')
+            soup = BeautifulSoup(self.__driver.page_source, 'html.parser')
 
             lilist = soup.find_all('div', "singleCell")
             if(len(lilist) == 0): 
@@ -179,15 +179,15 @@ class AmazonList:
 
         else:
             try:
-                WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
+                WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
             except TimeoutException:
                 print("timeout exception driver will be closed")
-                driver.quit()
+                self.__driver.quit()
 
             # get the listed items from html
             itemObjList = []
             # some = driver.find_elements_by_xpath('//*[@class="zg-item-immersion"]')
-            soup = BeautifulSoup(driver.page_source, 'html.parser')
+            soup = BeautifulSoup(self.__driver.page_source, 'html.parser')
             
             lilist = soup.find_all('span', class_='a-list-item')
             for li in lilist:
@@ -224,5 +224,5 @@ class AmazonList:
    
 
     def closeDriver(self):
-        driver.quit()
+        self.__driver.quit()
         
