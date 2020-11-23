@@ -99,6 +99,7 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
 
 """)    
         else: 
+            affiliateLink = el['affiliateLink'] if el['affiliateLink'] else "NO LINK"
             text = (f"""
   
 💰<b>OFFERTA BEST PRODUCTS</b>
