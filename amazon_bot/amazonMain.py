@@ -35,7 +35,7 @@ categories = (
         "BEST_SELLER_BELLEZ_HOURLY_24H",
         "BEST_SELLER_GAMESS_HOURLY_24H",
         
-    )
+     )
 
 diff_collection = "ITEMS_DIFF"
     
@@ -70,7 +70,6 @@ def main():
 
         time.sleep(5)
 
-    amListObj.closeDriver()
 
 if __name__ == '__main__':
     main()

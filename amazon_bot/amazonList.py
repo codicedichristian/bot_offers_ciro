@@ -114,9 +114,9 @@ class AmazonList:
         return completo.replace("\n", "")
 
     def __getDealsTitle(self, li): 
-        found = li.find('a', class_="singleCellTitle").find('span')
+        found = li.find('a', class_="singleCellTitle")
         if found:
-            return found.string.replace('\n', '')
+            return found.find('span').string.replace('\n', '')
         else: return ""
     
     def __getDealsImgLink(self, li):
