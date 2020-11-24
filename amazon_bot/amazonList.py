@@ -84,7 +84,7 @@ class AmazonList:
         return asin_found
 
     def __getaffiliatelink(self, asin, link): 
-        base_link = link + "&tag=" + self.__affiliate_id
+        base_link = "https://www.amazon.it/" + link + "&tag=" + self.__affiliate_id
         return base_link
         
     def __getTimesmp(self):
