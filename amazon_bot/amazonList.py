@@ -92,7 +92,7 @@ class AmazonList:
            base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
            return base_link.replace("ASIN_TO_INCLUDE", asin)
               
-       return "https://www.amazon.it/" + link + "&ref=nosim?tag=" + self.__affiliate_id
+       return "https://www.amazon.it/" + link.replace("https://www.amazon.it/", "") + "&ref=nosim?tag=" + self.__affiliate_id
         
     def __getTimesmp(self):
         ts = calendar.timegm(time.gmtime())
