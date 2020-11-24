@@ -88,7 +88,7 @@ class AmazonList:
         return base_link
 
     def __getaffiliatelink(self, asin, link): 
-       if "asin" != "": 
+       if "/dp/" in link: 
            base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
            return base_link.replace("ASIN_TO_INCLUDE", asin)
               
