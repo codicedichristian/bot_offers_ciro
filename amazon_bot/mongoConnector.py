@@ -6,7 +6,8 @@ import sys
 class MongoConnector:
 
     __messageToCategory = {
-        "BEST DEALS"       : "DEALS_GENERAL",
+        "DEALS 1"       : "DEALS_GENERAL_1",
+        "DEALS 2"       : "DEALS_GENERAL_2",
         "Get tech 24h"     : "BEST_SELLER_ELECTR_HOURLY_24H",
         "Get Messages"     : "ITEMS_DIFF", 
         "Get grocery 24h"  : "BEST_SELLER_GROCER_HOURLY_24H", 

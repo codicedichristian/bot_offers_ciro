@@ -37,8 +37,9 @@ class AmazonList:
         "BEST_SELLER_SPORTS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/sports/ref=zg_bsms_nav_s_1_s',
         "BEST_SELLER_BELLEZ_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/beauty/ref=zg_bsms_nav_gc_1_gc',
         "BEST_SELLER_GAMESS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/videogames/ref=zg_bsms_nav_s_1_s',
-        "DEALS_GENERAL": "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___page_1?gb_f_GB-SUPPLE=dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,page:2,sortOrder:BY_DISCOUNT_DESCENDING,enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C412603031%252C2844433031,discountRanges:25-50%252C50-70%252C70-,minRating:4,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,dealsPerPage:40&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8"
-   }
+        "DEALS_GENERAL_1": "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___page_1?gb_f_GB-SUPPLE=enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C412603031%252C2844433031,dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,discountRanges:25-50%252C50-70%252C70-,minRating:4,sortOrder:BY_DISCOUNT_DESCENDING&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8",
+        "DEALS_GENERAL_2" : "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___sort_BSEL?gb_f_GB-SUPPLE=enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C2844433031%252C412609031%252C1571292031%252C10272111,dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,discountRanges:10-25%252C25-50%252C50-70%252C70-,minRating:3,sortOrder:BY_BEST_SELLING,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8"
+   }    
 
     # grouped array with this function 
     def __chunk(self, it, size):
@@ -83,13 +84,8 @@ class AmazonList:
         return asin_found
 
     def __getaffiliatelink(self, asin, link): 
-        if "/dp/" in link: 
-            base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
-            return base_link.replace("ASIN_TO_INCLUDE", asin)
-        if "/deal" in link: 
-            base_link = "https://www.amazon.it/deal/ASIN_TO_INCLUDE/ref=nosim?tag=" + self.__affiliate_id
-            return base_link.replace("ASIN_TO_INCLUDE", asin)
-        return ""
+        base_link = link + "&tag=" + self.__affiliate_id
+        return base_link
         
     def __getTimesmp(self):
         ts = calendar.timegm(time.gmtime())
@@ -144,6 +140,7 @@ class AmazonList:
             soup = BeautifulSoup(self.__driver.page_source, 'html.parser')
 
             lilist = soup.find_all('div', "singleCell")
+
             if(len(lilist) == 0): 
                 print("nothing") 
                 return

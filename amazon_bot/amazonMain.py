@@ -25,7 +25,8 @@ def myBeautifulDiff(oldItems, newItems):
 
 
 categories = (
-        "DEALS_GENERAL",
+        "DEALS_GENERAL_1",
+        "DEALS_GENERAL_2",
         "BEST_SELLER_GROCER_HOURLY_24H",
         "BEST_SELLER_ELECTR_HOURLY_24H",
         "BEST_SELLER_TOOLSS_HOURLY_24H",
@@ -59,12 +60,11 @@ def main():
         print("deleting older objects from: ", category)
         items = mongo.deleteOlder(category)  
         ## get differences 
-        diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category, False))
-
-        if(len(diffToUpload) > 0):
-            mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
-        else: 
-            print("there aren't diff, so we will not update ITEMS_DIFF")
+        #diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category, False))
+        # if(len(diffToUpload) > 0):
+        #     mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
+        # else: 
+        #     print("there aren't diff, so we will not update ITEMS_DIFF")
         
         
 

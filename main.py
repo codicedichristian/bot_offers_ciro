@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 replykbrd = [
     [
-        'BEST DEALS',
+        'DEALS 2',
+        'DEALS 1',
         'Get tech 24h',
         'Get Messages',
         'Get grocery 24h',
@@ -99,11 +100,12 @@ def send_messages(update, context, item_to_send, textInputMsg = 'default'):
 
 """)    
         else: 
+            title = el['title'].lstrip()
             affiliateLink = el['affiliateLink'] if el['affiliateLink'] else "NO LINK"
             text = (f"""
   
 💰<b>OFFERTA BEST PRODUCTS</b>
-⚡️<b>{el['title']} </b>
+⚡️<b>{title} </b>
 
 <b>🔥 Prezzo Scontato: </b>{el['price']}
 
