@@ -19,9 +19,9 @@ def update():
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         times=times+1
         print("launching... ", times, dt_string)
-        launchMain()
+        amazonMain.main()
         print("launched!! at: ", dt_string, " going to sleep 1800sec")
-        time.sleep(1800)
+        time.sleep(900)
 
 
 if __name__ == '__main__':
