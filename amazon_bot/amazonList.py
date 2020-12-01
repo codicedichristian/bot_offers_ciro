@@ -17,6 +17,7 @@ class AmazonList:
 
     __chrome_options = Options()
     __chrome_options.add_argument("--headless")
+    __chrome_options.add_argument("--single-process")
     __chrome_options.add_argument("--no-sandbox")
     __chrome_options.add_argument("--disable-dev-shm-usage")
     __chrome_prefs = {}
@@ -24,7 +25,7 @@ class AmazonList:
     __chrome_prefs["profile.default_content_settings"] = {"images": 2}
     __driver = webdriver.Chrome(options=__chrome_options)
     # #driver = webdriver.Chrome('/usr/bin/chromedriver')
-    __elements_to_return = 10
+    __elements_to_return =  25
 
     __affiliate_id = "dealsitalia0f-21"
     __categories = {
@@ -140,7 +141,7 @@ class AmazonList:
                 WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
             except TimeoutException:
                 print("timeout exception driver will be closed")
-                driver.quit()
+                self.__driver.quit()
             
             # get the listed items from html
             itemObjList = []
