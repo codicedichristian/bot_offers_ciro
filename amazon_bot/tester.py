@@ -22,34 +22,36 @@ driver = webdriver.Chrome(options=chrome_options)
 #driver = webdriver.Chrome(executable_path='/Users/christian/personalProjects/best_deals_amz/amazon_bot/chromedriver')
 elements_to_return = 10
 
-link_to_use = "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___sort_BSEL?gb_f_GB-SUPPLE=enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C2844433031%252C412609031%252C1571292031%252C10272111,dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,discountRanges:10-25%252C25-50%252C50-70%252C70-,minRating:3,sortOrder:BY_BEST_SELLING,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8"
+link_to_use = "https://www.amazon.it/deal/06ea9066/ref=gbps_tit___06ea9066?showVariations=true&BFDay=true&smid=A11IL2PNWYJU7H"
 pageResult = driver.get(link_to_use)
 timeout = 5
 
-try:
-    print("trying")
-    WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
-except TimeoutException:
-    print("timeout exception driver will be closed")
-    driver.quit()
 
 def getlink(li):
     found = li.find('a', class_="a-link-normal")
     return found.get('href') if found else ""
 
 def getPrezzoOfferta(li):
-    found = li.find('span', class_="dealPriceText")
-    return found.string if found else ""
+    found = li.find('div', class_="a-row octopus-dlp-price")
+    completo=""
+    if found: 
+        spans = found.find_all('span')
+        some = spans[3]
+        return some.text if some else ""
+    return ""
+        
 
 def getInveceDi(li): 
         completo = ""
-        found = li.find("div", class_="a-spacing-top-mini")
+        found = li.find("span", class_="octopus-widget-price-saving-info")
         if found: 
             spans = found.find_all('span')
             for span in spans: 
                 replacedSpan = span.text.replace(":","").replace("\n","").replace(" ","")
                 completo = completo + replacedSpan + ":"
         return completo.replace("\n", "")
+
+        
 
 def getaffiliatelink(asin, link): 
     affiliate_id = "dealsitalia0f-21"
@@ -63,7 +65,7 @@ def getaffiliatelink(asin, link):
         
 
 def getTitle(li): 
-    found = li.find('a', class_="singleCellTitle").find('span')
+    found = li.find('span', class_="a-size-base a-color-base").find('span')
     return found.string if found else ""
 
 def getasin(link): 
@@ -74,18 +76,18 @@ def getasin(link):
     return asin_found
 
 try:
-    print("get objs from deals link")
-    
-    WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
+    WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.CLASS_NAME, "octops-dlp-asin-stream-section")))
 except TimeoutException:
     print("timeout exception driver will be closed")
     driver.quit()
+
 soup = BeautifulSoup(driver.page_source, 'html.parser')
-lilist = soup.find_all('div', "singleCell")
+lilist = soup.find_all('li', "a-list-normal")
 if(len(lilist) == 0): 
    print("nothing") 
 else:
     for li in lilist:
+        print(li)
         link = getlink(li)
         prezzoOfferta = getPrezzoOfferta(li)
         inveceDi= getInveceDi(li)
