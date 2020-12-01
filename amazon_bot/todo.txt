@@ -1,4 +1,11 @@
-modifiche che bisogna fare :   
+
+
+-- MIGLIORIE
+
+- screpare link deals oppure creare in app links per quelli con + oggetti e no asin
 - trovari nuovi link da screpare
-- cercare di esternalizzare alcune cose su mongodb come configs 
-- fare scraping di offerte a tempo (link todo)
+
+-------- COOL ---- 
+
+- aggiungere bottone che va ad inviare in un'altra chat 
+- creatore di messaggi nel momento in cui viene inviato un link 
