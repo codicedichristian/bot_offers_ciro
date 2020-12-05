@@ -52,6 +52,12 @@ messages_to_send_in_another_chann = {}
 GET_LIST, GET_TECH_LIST, SEND_MESSAGES, CREATE_MSG, CHOOSING, ASK_FOR_LINK = range(6)
 
 def start(update, context):
+    chat_id = update.message.chat_id
+    print(chat_id)
+    if(chat_id != 1237137064):
+        context.bot.sendMessage(chat_id, "sorry, you're not my boss.")
+        return
+
     print("mi hanno scritto")
     reply_keyboard = replykbrd
     update.message.reply_text(
