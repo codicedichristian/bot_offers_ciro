@@ -6,17 +6,17 @@ import sys
 class MongoConnector:
 
     __messageToCategory = {
-        "DEALS 1"       : "DEALS_GENERAL_1",
-        "DEALS 2"       : "DEALS_GENERAL_2",
-        "Get tech 24h"     : "BEST_SELLER_ELECTR_HOURLY_24H",
-        "Get Messages"     : "ITEMS_DIFF", 
-        "Get grocery 24h"  : "BEST_SELLER_GROCER_HOURLY_24H", 
-        "Get kitchen 24h"  : "BEST_SELLER_KITCHE_HOURLY_24H", 
-        "Get tools 24h"    : "BEST_SELLER_TOOLSS_HOURLY_24H", 
-        "Get computer 24h" : "BEST_SELLER_COMPUT_HOURLY_24H", 
-        "Get sports 24h"   : "BEST_SELLER_SPORTS_HOURLY_24H", 
-        "Get bel 24h"      : "BEST_SELLER_BELLEZ_HOURLY_24H",
-        "Get games 24h"    : "BEST_SELLER_GAMESS_HOURLY_24H",
+        "mangiare"    : "BEST_SELLER_GROCER_HOURLY_24H",
+        "cucina"      : "BEST_SELLER_KITCHE_HOURLY_24H",
+        "elettronica" : "BEST_SELLER_ELECTR_HOURLY_24H",
+        "tools"       : "BEST_SELLER_TOOLSS_HOURLY_24H", 
+        "computer"    : "BEST_SELLER_COMPUT_HOURLY_24H", 
+        "sports"      : "BEST_SELLER_SPORTS_HOURLY_24H", 
+        "boost"       : "BEST_SELLER_BOOSTT_HOURLY_24H", 
+        "mix pg1"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG1", 
+        "mix pg2"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG2", 
+        "mix pg3"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG3",
+        "mix l20"     : "DEALS_BEST_SELLER_MIX____HOURLY_L20",
     }
 
     __db = None
@@ -29,6 +29,10 @@ class MongoConnector:
     # insert items if the data input is consistent
     def insertItems(self, data, collection): 
         res = self.__db[collection].insert_many(data)
+        return res
+    
+    def insertOneItem(self, data, collection): 
+        res = self.__db[collection].insert_one(data)
         return res
 
     # delete the last but two of items in the given collection
@@ -47,6 +51,10 @@ class MongoConnector:
         print("delete older things of", collection)
         return 0
 
+    def deleteAll(self, collection): 
+        self.__db[collection].delete_many({})
+        return 0
+        
     # get all items of given collection
     def getAllItems(self, collection): 
         return self.__db[collection].find({})

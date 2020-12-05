@@ -14,20 +14,24 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 replykbrd = [
     [
-        'DEALS 2',
-        'DEALS 1',
-        'Get tech 24h',
-        'Get Messages',
-        'Get grocery 24h',
-        'Get kitchen 24h',
-        'Get bel 24h'
+        'mangiare',
+        'cucina',
+        'elettronica',
+        'tools'
     ],
     [
-        'Get tools 24h',
-        'Get computer 24h',
-        'Get sports 24h',
+        'computer',
+        'sports',
+        'boost',
+        'mix pg1'
+    ],
+    [
+        'mix pg2',
+        'mix pg3',
+        'mix l20'
     ]
 ]
 
@@ -45,7 +49,7 @@ item_to_send_list = []
 messages_to_send_in_another_chann = {}
 
 
-GET_LIST, GET_TECH_LIST, SEND_MESSAGES, CHOOSING = range(4)
+GET_LIST, GET_TECH_LIST, SEND_MESSAGES, CREATE_MSG, CHOOSING, ASK_FOR_LINK = range(6)
 
 def start(update, context):
     print("mi hanno scritto")
@@ -58,21 +62,43 @@ def start(update, context):
 
 def action_switcher(update, context):
     text = update.message.text
+    
+    if(text == "create msg"):
+        return ASK_FOR_LINK
+    if(text.lower() == "last"): 
+        collection =  "LAST_LAUNCH"
+        mongoConn  = MongoConnector()
+        items = mongoConn.getAllItems(collection)
+        for item in items: 
+            send_last_date_message(update, context, item['date'])
+        return 
+    
     mongoConn  = MongoConnector()
-    newDiffToMap = mongoConn.getLastItems(text, True)  
-    send_messages(update, context, newDiffToMap, text)
-    
+    items_to_send = mongoConn.getLastItems(text, True)  
+    send_messages(update, context, items_to_send, text)
     return
-    
 
+def ask_for_link(update, context):
+    update.message.reply_text('Hi, give me the link! ;) ')
+    return CREATE_MSG
+
+def create_msg(update, context):
+    #todo
+    return 
 # def get_list(update, context): 
 #     mongoConn  = MongoConnector()
 #     newDiffToMap = mongoConn.getLastItems('ITEMS_DIFF')  
 #     send_messages(update, context, newDiffToMap)
 
-    
+def send_last_date_message(update, context, text): 
+    chat_id = update.message.chat_id
+    context.bot.sendMessage(chat_id, text)
+
+    return ConversationHandler.END
+
 def send_messages(update, context, item_to_send, textInputMsg = 'default'):
     chat_id = update.message.chat_id
+    #this because when you click the green button (invia in un altro canale) it will take the right collection
     messages_to_send_in_another_chann.update({str(textInputMsg): []})
     element = []
     i = 0 
@@ -184,9 +210,9 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            CHOOSING: [
-                MessageHandler(Filters.regex('^(.*)$'), action_switcher)
-            ],
+            CHOOSING: [MessageHandler(Filters.regex('^(.*)$'), action_switcher)],
+            ASK_FOR_LINK: [MessageHandler(Filters.regex('^(.*)$'), ask_for_link)],
+            CREATE_MSG: [MessageHandler(Filters.regex('^(.*)$'), create_msg)],
         },
         fallbacks=[MessageHandler(Filters.regex('^Done$'), done)]
     )

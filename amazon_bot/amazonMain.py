@@ -5,6 +5,7 @@
 from amazonList import AmazonList
 from mongoConnector import MongoConnector
 import time
+from datetime import datetime
 
 def checkKey(dict, key): 
       
@@ -25,18 +26,20 @@ def myBeautifulDiff(oldItems, newItems):
 
 
 categories = (
-        "DEALS_GENERAL_1",
-        "DEALS_GENERAL_2",
-        "BEST_SELLER_GROCER_HOURLY_24H",
-        "BEST_SELLER_ELECTR_HOURLY_24H",
-        "BEST_SELLER_TOOLSS_HOURLY_24H",
-        "BEST_SELLER_KITCHE_HOURLY_24H",
-        "BEST_SELLER_COMPUT_HOURLY_24H",
-        "BEST_SELLER_SPORTS_HOURLY_24H",
-        "BEST_SELLER_BELLEZ_HOURLY_24H",
-        "BEST_SELLER_GAMESS_HOURLY_24H",
-        
-     )
+        "DEALS_BEST_SELLER_MIX____HOURLY_PG1",
+        "DEALS_BEST_SELLER_MIX____HOURLY_PG2",
+        "DEALS_BEST_SELLER_MIX____HOURLY_PG3",
+        "DEALS_BEST_SELLER_MIX____HOURLY_L20",
+        "BEST_SELLER_GROCER_HOURLY_24H", 
+        "BEST_SELLER_KITCHE_HOURLY_24H", 
+        "BEST_SELLER_ELECTR_HOURLY_24H", 
+        "BEST_SELLER_TOOLSS_HOURLY_24H", 
+        "BEST_SELLER_COMPUT_HOURLY_24H", 
+        "BEST_SELLER_SPORTS_HOURLY_24H", 
+        #new 
+        "BEST_SELLER_BOOSTT_HOURLY_24H",
+
+    )
 
 diff_collection = "ITEMS_DIFF"
     
@@ -69,6 +72,15 @@ def main():
         
 
         time.sleep(5)
+    
+    print("writing last timestamp")
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    lastLaunchItem = {
+        "date"      :  dt_string, 
+    }
+    mongo.deleteAll("LAST_LAUNCH")
+    mongo.insertOneItem(lastLaunchItem, "LAST_LAUNCH")
 
 
 if __name__ == '__main__':

@@ -36,10 +36,14 @@ class AmazonList:
         "BEST_SELLER_TOOLSS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/tools/ref=zg_bsms_nav_ce_1_ce',
         "BEST_SELLER_COMPUT_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/pc/ref=zg_bsms_nav_light_1_light',
         "BEST_SELLER_SPORTS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/sports/ref=zg_bsms_nav_s_1_s',
-        "BEST_SELLER_BELLEZ_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/beauty/ref=zg_bsms_nav_gc_1_gc',
-        "BEST_SELLER_GAMESS_HOURLY_24H" : 'https://www.amazon.it/gp/movers-and-shakers/videogames/ref=zg_bsms_nav_s_1_s',
-        # "DEALS_GENERAL_1": "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___page_1?gb_f_GB-SUPPLE=enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C412603031%252C2844433031,dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,discountRanges:25-50%252C50-70%252C70-,minRating:4,sortOrder:BY_DISCOUNT_DESCENDING&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8",
-        # "DEALS_GENERAL_2" : "https://www.amazon.it/blackfriday/2/ref=gbps_ftr___sort_BSEL?gb_f_GB-SUPPLE=enforcedCategories:473287031%252C435504031%252C732998031%252C6198092031%252C6377736031%252C524015031%252C1497228031%252C473365031%252C827181031%252C435505031%252C635016031%252C14437356031%252C425916031%252C524009031%252C524006031%252C524012031%252C2844433031%252C412609031%252C1571292031%252C10272111,dealTypes:DEAL_OF_THE_DAY%252CLIGHTNING_DEAL%252CBEST_DEAL,discountRanges:10-25%252C25-50%252C50-70%252C70-,minRating:3,sortOrder:BY_BEST_SELLING,dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL&gb_ttl_GB-SUPPLE=Offerte%2520a%2520Meno%2520di%252020%E2%82%AC&ie=UTF8"
+        
+        #new 
+        "BEST_SELLER_BOOSTT_HOURLY_24H"       : "https://www.amazon.it/gp/movers-and-shakers/boost/ref=zg_bsms_nav_gro_1_gro",
+        "DEALS_BEST_SELLER_MIX____HOURLY_PG1" : "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_8ffd_acr_4?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,sortOrder:BY_DISCOUNT_DESCENDING,enforcedCategories:1497228031%252C473287031%252C473365031%252C732997031%252C435505031%252C635016031%252C412609031%252C1571292031%252C425916031%252C524009031%252C524006031%252C2454148031%252C412603031%252C524012031,minRating:4,primeEligibleOnly:true&pf_rd_p=3dcc9ba5-cb56-42e1-ac1e-c26f3b278ffd&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=CBZ0HSMMNKXCQPWT5TM7&ie=UTF8",
+        "DEALS_BEST_SELLER_MIX____HOURLY_PG2" : "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_8ffd_page_2?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,page:2,sortOrder:BY_DISCOUNT_DESCENDING,enforcedCategories:1497228031%252C473287031%252C473365031%252C732997031%252C435505031%252C635016031%252C412609031%252C1571292031%252C425916031%252C524009031%252C524006031%252C2454148031%252C412603031%252C524012031,minRating:4,primeEligibleOnly:true,dealsPerPage:40&pf_rd_p=3dcc9ba5-cb56-42e1-ac1e-c26f3b278ffd&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=CBZ0HSMMNKXCQPWT5TM7&ie=UTF8",
+        "DEALS_BEST_SELLER_MIX____HOURLY_PG3" : "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_8ffd_page_3?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,page:3,sortOrder:BY_DISCOUNT_DESCENDING,enforcedCategories:1497228031%252C473287031%252C473365031%252C732997031%252C435505031%252C635016031%252C412609031%252C1571292031%252C425916031%252C524009031%252C524006031%252C2454148031%252C412603031%252C524012031,minRating:4,primeEligibleOnly:true,dealsPerPage:40&pf_rd_p=3dcc9ba5-cb56-42e1-ac1e-c26f3b278ffd&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=CBZ0HSMMNKXCQPWT5TM7&ie=UTF8",
+        "DEALS_BEST_SELLER_MIX____HOURLY_L20" : "https://www.amazon.it/gp/goldbox/ref=gbps_ftr_s-5_8ffd_prc_-20?gb_f_deals1=dealStates:AVAILABLE%252CWAITLIST%252CWAITLISTFULL,sortOrder:BY_DISCOUNT_DESCENDING,enforcedCategories:1497228031%252C473287031%252C473365031%252C732997031%252C435505031%252C635016031%252C412609031%252C1571292031%252C425916031%252C524009031%252C524006031%252C2454148031%252C412603031%252C524012031,minRating:4,primeEligibleOnly:true,priceRanges:-20&pf_rd_p=3dcc9ba5-cb56-42e1-ac1e-c26f3b278ffd&pf_rd_s=slot-5&pf_rd_t=701&pf_rd_i=gb_main&pf_rd_m=A11IL2PNWYJU7H&pf_rd_r=CBZ0HSMMNKXCQPWT5TM7&ie=UTF8",
+ 
    }    
 
     # grouped array with this function 
@@ -135,6 +139,7 @@ class AmazonList:
         link_to_use = self.__categories[category_to_get]
         pageResult = self.__driver.get(link_to_use)
         timeout = 220
+        ### non so dove sono andati a finire. 
         if "DEALS" in category_to_get: 
             try:
                 print("get objs from deals link")
