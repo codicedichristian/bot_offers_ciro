@@ -31,11 +31,11 @@ replykbrd = [
     [
         'mix pg2',
         'mix pg3',
-        'mix pg4'
-    ]
+        'mix pg4',
+    ],
     [
         'mix pg5',
-        'mix pg6'
+        'mix pg6',
     ]
 ]
 
