@@ -144,9 +144,10 @@ class AmazonList:
             try:
                 print("get objs from deals link")
                 WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.ID, "widgetContent")))
-            except TimeoutException:
+            except:
                 print("timeout exception driver will be closed")
                 self.__driver.quit()
+                return []
             
             # get the listed items from html
             itemObjList = []
@@ -156,7 +157,7 @@ class AmazonList:
 
             if(len(lilist) == 0): 
                 print("nothing") 
-                return
+                return []
             else:
                 for li in lilist:
                     link = self.__getDealslink(li)
@@ -190,9 +191,10 @@ class AmazonList:
         else:
             try:
                 WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
-            except TimeoutException:
+            except:
                 print("timeout exception driver will be closed")
                 self.__driver.quit()
+                return []
 
             # get the listed items from html
             itemObjList = []
