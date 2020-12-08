@@ -16,7 +16,9 @@ class MongoConnector:
         "mix pg1"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG1", 
         "mix pg2"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG2", 
         "mix pg3"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG3",
-        "mix l20"     : "DEALS_BEST_SELLER_MIX____HOURLY_L20",
+        "mix pg4"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG4",
+        "mix pg5"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG5",
+        "mix pg6"     : "DEALS_BEST_SELLER_MIX____HOURLY_PG6",
     }
 
     __db = None
