@@ -54,7 +54,7 @@ def getInveceDi(li):
         
 
 def getaffiliatelink(asin, link): 
-    affiliate_id = "dealsitalia0f-21"
+    affiliate_id =  "dealsitalia06-21"
     if "/dp/" in link: 
         base_link = "https://www.amazon.it/dp/ASIN_TO_INCLUDE/ref=nosim?tag=" + affiliate_id
         return base_link.replace("ASIN_TO_INCLUDE", asin)
