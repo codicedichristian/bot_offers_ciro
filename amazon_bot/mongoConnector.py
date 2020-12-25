@@ -30,6 +30,7 @@ class MongoConnector:
 
     # insert items if the data input is consistent
     def insertItems(self, data, collection): 
+        if(len(data) <= 0): return 0
         res = self.__db[collection].insert_many(data)
         return res
     
