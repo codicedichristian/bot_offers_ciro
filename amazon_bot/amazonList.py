@@ -146,8 +146,7 @@ class AmazonList:
                 print("get objs from deals link")
                 WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.CLASS_NAME, "dealContainer")))
             except:
-                print("timeout exception driver will be closed")
-                self.__driver.quit()
+                print("timeout exception with: ", category_to_get)
                 return []
             
             # get the listed items from html
@@ -157,7 +156,7 @@ class AmazonList:
             lilist = soup.find_all('div', "singleCell")
 
             if(len(lilist) == 0): 
-                print("nothing") 
+                print("there is nothing") 
                 return []
             else:
                 for li in lilist:
@@ -193,8 +192,7 @@ class AmazonList:
             try:
                 WebDriverWait(self.__driver, timeout).until(EC.visibility_of_element_located((By.ID, "zg-ordered-list")))
             except:
-                print("timeout exception driver will be closed")
-                self.__driver.quit()
+                print("timeout exception with: ", category_to_get)
                 return []
 
             # get the listed items from html

@@ -49,7 +49,12 @@ diff_collection = "ITEMS_DIFF"
 def main():
 
     amListObj = AmazonList()
-    mongo = MongoConnector()
+    try: 
+        mongo = MongoConnector()
+    except: 
+        print("exception in mongoconnector, we will retry it next time.")
+        return
+
 
     # for category in categories:
     #     items_from_amazon = amListObj.getNewList(category) ## return json obj list
@@ -58,28 +63,22 @@ def main():
     for category in categories:
         print("getting new list from: ", category)
         # get list from amazon html
-        items_from_amazon = amListObj.getNewList(category)
-        ## put the list inside mongodb 
-        mongo.insertItems(items_from_amazon, category)
-        ## delete older ( three timestamp before)
-        print("deleting older objects from: ", category)
-        items = mongo.deleteOlder(category)  
-        ## get differences 
-        #diffToUpload = myBeautifulDiff(mongo.getPreviousItems(category), mongo.getLastItems(category, False))
-        # if(len(diffToUpload) > 0):
-        #     mongo.insertItems(diffToUpload, 'ITEMS_DIFF')
-        # else: 
-        #     print("there aren't diff, so we will not update ITEMS_DIFF")
-        
-        
-
-        time.sleep(5)
+        try: 
+            items_from_amazon = amListObj.getNewList(category)
+            ## put the list inside mongodb 
+            mongo.insertItems(items_from_amazon, category)
+            ## delete older ( three timestamp before)
+            print("deleting older objects from: ", category)
+            items = mongo.deleteOlder(category)  
+        except: 
+            print("operations on: ", category, "caused an error, we will retry next time" )
+            continue
     
-    print("writing last timestamp")
+    print("writing last timestamp...")
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
     lastLaunchItem = {
-        "date"      :  dt_string, 
+        "date" : dt_string, 
     }
     mongo.deleteAll("LAST_LAUNCH")
     mongo.insertOneItem(lastLaunchItem, "LAST_LAUNCH")
