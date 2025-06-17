@@ -22,7 +22,7 @@ class MongoConnector:
     }
 
     __db = None
-    __mongoConnection = 'mongodb+srv://admin:r47eTLplxKiEp4Jj@amzdlsd01-qfqmt.mongodb.net/authSource=amzdlsd01&retryWrites=true&w=majority'
+    __mongoConnection = '' #add your credentials :D
 
     def __init__(self):
         client = MongoClient(self.__mongoConnection, ssl=True)
